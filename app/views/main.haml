@@ -1,0 +1,37 @@
+!!!
+%html{html_attrs()}
+  %head
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="themes/Miner.min.css" />
+    <link rel="stylesheet" href="themes/jquery.mobile.structure-1.2.0.min.css" />
+    <script src="third-party-js/jquery-1.8.2.min.js"></script>
+    <script src="third-party-js/jquery.mobile-1.2.0.min.js"></script>
+
+  %body
+    %div{"data-role" => "page"}
+      %div{"data-position" => "inline", "data-role" => "header"}
+        %h1 It Worked!
+      %div{"data-role" => "content"}
+        %label{:for => "slider1"} Input slider:
+        %input#slider1{"data-theme" => "a", :max => "100", :min => "0", :name => "slider1", :type => "range", :value => "50"}/
+        %br/
+        %fieldset{"data-role" => "controlgroup", "data-type" => "horizontal"}
+          %legend Choose a pet:
+          %input#radio-choice-1{:checked => "checked", :name => "radio-choice", :type => "radio", :value => "choice-1"}/
+          %label{:for => "radio-choice-1"} Cat
+          %input#radio-choice-2{:name => "radio-choice", :type => "radio", :value => "choice-2"}/
+          %label{:for => "radio-choice-2"} Dog
+          %input#radio-choice-3{:name => "radio-choice", :type => "radio", :value => "choice-3"}/
+          %label{:for => "radio-choice-3"} Hamster
+          %input#radio-choice-4{:name => "radio-choice", :type => "radio", :value => "choice-4"}/
+          %label{:for => "radio-choice-4"} Lizard
+
+    :javascript
+      $(function() {
+        $.event.special.swipe.horizontalDistanceThreshold = 300;
+        $(document).swipe(function() {
+          $('body').remove();
+          window.location.reload();
+        });
+      });

@@ -16,6 +16,6 @@ public class MainActivity extends Activity {
     WebView myWebView = (WebView) findViewById(R.id.webview);
     WebSettings webSettings = myWebView.getSettings();
     webSettings.setJavaScriptEnabled(true);
-    myWebView.loadUrl("http://128.12.174.204:8000/index.html");
+    myWebView.loadUrl("http://128.12.174.204:8000/main");
   }
 }
