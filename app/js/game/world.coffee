@@ -1,4 +1,4 @@
-Miner.World = class World
+class Miner.World
   constructor: (width, height, levels) ->
     @tiles = [] 
     @width = width
@@ -6,28 +6,34 @@ Miner.World = class World
     @levels = levels
 
   setTile: (tile) ->
-    @tiles[@_index(tile)] = @tile
+    @tiles[@_index(tile.col, tile.row, tile.level)] = tile
     
   getTile: (col, row, level) ->
-    @tiles[@_index(tile)]
+    @tiles[@_index(col, row, level)]
 
-  _index: (tile) ->
-    tile.level * (@width * @height) + tile.row * @width + tile.col
+  _index: (col, row, level) ->
+    level * (@width * @height) + row * @width + col
 
   @newWorld: (width, height, levels, mountainProbability, veinProbability) ->
+    console.log(width)
     world = new World(width, height, levels)
-    _.each(_.range(width), (col) =>
-      _.each(_.range(height), (row) =>
-        _.each(_.range(levels), (level) =>
-          tile = new Tile(col, row, level)
+    _.each(_.range(levels), (level) =>
+      _.each(_.range(width), (col) =>
+        _.each(_.range(height), (row) =>
+          tile = new Miner.Tile(col, row, level)
 
-          rand = Math.random
+          rand = Math.random()
           if rand < mountainProbability
-            tile.terrainType = TerrainType.MOUNTAIN
-          else if rand < mountainProbability + veinProbability
-            tile.terrainType = TerrainType.VEIN
+            tile.terrainType = Miner.TerrainType.MOUNTAIN
+          else if rand < mountainProbability + veinProbability and
+            world.getTile(col, row, level - 1)?.terrainType != Miner.TerrainType.VEIN
+              tile.terrainType = Miner.TerrainType.VEIN
+          else
+            tile.terrainType = Miner.TerrainType.ROUGH
 
-          @setTile(tile)
+          world.setTile(tile)
         )
       )
     )
+
+    world

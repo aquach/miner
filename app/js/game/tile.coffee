@@ -7,7 +7,7 @@ Miner.TerrainType =
 Miner.BuildingType =
   MINE: 0
 
-Miner.Tile = class Tile
+class Miner.Tile
   constructor: (col, row, level) ->
     @col = col
     @row = row

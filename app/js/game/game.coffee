@@ -1,4 +1,4 @@
-Miner.Game = class Game
+class Miner.Game
   constructor: (world, mine) ->
     @world = world
     @mine = mine

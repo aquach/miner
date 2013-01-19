@@ -1,10 +1,9 @@
 #!/usr/bin/ruby1.8
 
+ENV['EXECJS_RUNTIME'] = 'Node'
+
 require 'rubygems'
 require 'sinatra'
-require 'haml'
-require 'less'
-require 'coffee_script'
 
 set :port, 8000
 set :views, :coffee => 'js', :less => 'css', :default => 'views'
@@ -31,7 +30,9 @@ helpers do
   end
 
   def find_js(globs, dir)
-    globs.map { |glob| Dir[dir + glob + '.{js,coffee}'] }.flatten
+    globs.map { |glob| Dir[dir + glob + '.{js,coffee}'] }.flatten.uniq.map { |filename|
+      filename.gsub(/coffee$/, 'js')
+    }
   end
 
   def third_party_js_files
@@ -53,12 +54,12 @@ get '/main' do
   haml :main
 end
 
-get '/specs' do
-  haml :specs
-end
-
 get '/js/*' do |path|
   coffee path.gsub(/\..*$/, '').to_sym
+end
+
+get '/specs' do
+  haml :specs
 end
 
 get '/css/*' do |path|
