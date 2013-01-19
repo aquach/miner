@@ -13,3 +13,16 @@ describe 'World', ->
       expectedTile = if level % 2 == 0 then Miner.TerrainType.VEIN else Miner.TerrainType.ROUGH
       expect(tile.terrainType).toBe(expectedTile)
     )
+
+  it 'always constructs worlds with a mothership', ->
+    world = Miner.World.newWorld(1, 1, 2, 0.2, 0.2)
+    expect(world.getTile(0, 0, 0).buildingType).toBe(Miner.BuildingType.MOTHERSHIP)
+
+  it 'counts buildings', ->
+    world = Miner.World.newWorld(3, 2, 6, 0.2, 0.2)
+    world.getTile(0, 0, 0).buildingType = Miner.BuildingType.MINE
+    world.getTile(1, 1, 1).buildingType = Miner.BuildingType.PROCESSOR
+    world.getTile(2, 2, 2).buildingType = Miner.BuildingType.MINE
+    expect(world.countBuildings(Miner.BuildingType.MINE)).toBe(2)
+    expect(world.countBuildings(Miner.BuildingType.PROCESSOR)).toBe(1)
+

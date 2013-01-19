@@ -4,9 +4,6 @@ Miner.TerrainType =
   MOUNTAIN: 2
   VEIN: 3
 
-Miner.BuildingType =
-  MINE: 0
-
 class Miner.Tile
   constructor: (col, row, level) ->
     @col = col
