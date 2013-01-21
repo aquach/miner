@@ -22,16 +22,26 @@ class Miner.World
     level * (@width * @height) + row * @width + col
 
   countBuildings: (buildingType) ->
-    numBuildings = 0
-    for level in [0..@levels - 1]
-      for row in [0..@height - 1]
-        for col in [0..@width - 1]
-          if @getTile(col, row, level).buildingType == buildingType
-            numBuildings++
-    
-    numBuildings
+    (1 for tile in @tiles when tile.buildingType == buildingType).length
 
-  @newWorld: (width, height, levels, mountainProbability, veinProbability) ->
+  mothershipTile: ->
+    _.find(@tiles, (tile) -> tile.buildingType == Miner.BuildingType.MOTHERSHIP)
+
+  canPlaceBuilding: (tile, buildingType) ->
+    adjacency = _.some(@tiles, (t) -> t.isConstructedBuilding() and tile.isAdjacentTo(t))
+    if not adjacency
+      Miner.Error.NOT_ADJACENT
+    else if tile.terrainType not in buildingType.validTerrain
+      Miner.Error.INVALID_TERRAIN
+    else if tile.buildingType != null and not buildingType.canBuildOverBuildings
+      Miner.Error.TILE_FILLED
+    else
+      Miner.Error.SUCCESS
+  
+  allValidBuildingTiles: (buildingType) ->
+    tile for tile in @tiles when @canPlaceBuilding(tile)
+    
+  @newWorld: (width, height, levels, mountainProbability, veinProbability, mothershipParams = null) ->
     world = new World(width, height, levels)
     for level in [0..levels - 1]
       for row in [0..height - 1]
@@ -49,8 +59,12 @@ class Miner.World
 
           world._setTile(tile)
 
-    col = _.random(width - 1)
-    row = _.random(height - 1)
+    if mothershipParams
+      { col: col, row: row } = mothershipParams
+    else
+      col = _.random(width - 1)
+      row = _.random(height - 1)
+
     tile = world.getTile(col, row, 0)
     tile.buildingType = Miner.BuildingType.MOTHERSHIP
 

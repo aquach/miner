@@ -15,6 +15,7 @@ THIRD_PARTY_JS_FILES = [
 
 JS_FILES = [
   'setup',
+  'util',
   '**/*'
 ]
 

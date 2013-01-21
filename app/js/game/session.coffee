@@ -15,17 +15,8 @@ class Miner.Session
     @money -= amount
     return true
 
-  canPlaceBuilding: (world, col, row, level, buildingType) ->
-    tile = world.getTile(col, row, level)
-    if tile.terrainType not in buildingType.validTerrain
-      Miner.Error.INVALID_TERRAIN
-    else if tile.buildingType != null and not buildingType.canBuildOverBuildings
-      Miner.Error.TILE_FILLED
-    else
-      Miner.Error.SUCCESS
-
   buildBuilding: (world, col, row, level, buildingType) ->
-    placeable = @canPlaceBuilding(col, row, level, buildingType)
+    placeable = world.canPlaceBuilding(col, row, level, buildingType)
     if placeable != Miner.Error.SUCCESS
       return placeable
 
