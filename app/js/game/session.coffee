@@ -15,15 +15,14 @@ class Miner.Session
     @money -= amount
     return true
 
-  buildBuilding: (world, col, row, level, buildingType) ->
-    placeable = world.canPlaceBuilding(col, row, level, buildingType)
+  buildBuilding: (world, tile, buildingType) ->
+    placeable = world.canPlaceBuilding(tile, buildingType)
     if placeable != Miner.Error.SUCCESS
       return placeable
 
     if not @_deductMoney(buildingType.cost)
       return Miner.Error.INSUFFICIENT_FUNDS
 
-    tile = world.getTile(col, row, level)
     tile.buildingType = buildingType
 
     return Miner.Error.SUCCESS

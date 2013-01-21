@@ -38,8 +38,8 @@ class Miner.World
     else
       Miner.Error.SUCCESS
   
-  allValidBuildingTiles: (buildingType) ->
-    tile for tile in @tiles when @canPlaceBuilding(tile)
+  allPotentialBuildingTiles: (buildingType) ->
+    tile for tile in @tiles when @canPlaceBuilding(tile, buildingType) == Miner.Error.SUCCESS
     
   @newWorld: (width, height, levels, mountainProbability, veinProbability, mothershipParams = null) ->
     world = new World(width, height, levels)
@@ -66,6 +66,7 @@ class Miner.World
       row = _.random(height - 1)
 
     tile = world.getTile(col, row, 0)
+    tile.terrainType = Miner.TerrainType.BARE
     tile.buildingType = Miner.BuildingType.MOTHERSHIP
 
     world

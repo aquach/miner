@@ -7,6 +7,7 @@ Miner.BuildingType =
     constructionTime: 1
   MOTHERSHIP:
     id: 1
+    cost: 100000000
   MINE: 
     id: 2
     cost: 25
