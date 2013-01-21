@@ -11,3 +11,4 @@ Miner.Util.createEnum = (list...) ->
     id++
   )
   obj
+

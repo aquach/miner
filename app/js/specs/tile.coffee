@@ -12,8 +12,17 @@ describe 'Tile', ->
     tile.buildingType = Miner.BuildingType.MINE
     expect(tile.isConstructedBuilding()).toBe(true)
 
-    tile.buildingUnderConstruction = true
+    tile.remainingBuildingConstructionTime = 1
     expect(tile.isConstructedBuilding()).toBe(false)
 
     tile = new Miner.Tile(0, 0, 0)
     expect(tile.isConstructedBuilding()).toBe(false)
+
+  it 'recognizes buildings under construction', ->
+    tile = new Miner.Tile(0, 0, 0)
+    tile.buildingType = Miner.BuildingType.MINE
+    expect(tile.isUnderConstruction()).toBe(false)
+
+    tile.remainingBuildingConstructionTime = 1
+    expect(tile.isUnderConstruction()).toBe(true)
+

@@ -26,3 +26,4 @@ Miner.BuildingType =
     power: 0
     validTerrain: [ Miner.TerrainType.BARE ]
     constructionTime: 3
+

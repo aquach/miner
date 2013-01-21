@@ -6,3 +6,4 @@ Miner.Error = Miner.Util.createEnum(
   'TILE_FILLED',
   'NOT_ADJACENT'
 )
+

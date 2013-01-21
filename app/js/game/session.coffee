@@ -2,14 +2,8 @@ class Miner.Session
   constructor: () -> 
     @money = 0
 
-  netWorth: () ->
-    -10000
-
-  _gameOver: () ->
-
-  _deductMoney: (amount, forced = false) ->
-    if @money - amount <= @netWorth()
-      @_gameOver() if forced
+  _deductMoney: (amount) ->
+    if @money - amount < 0
       return false
 
     @money -= amount
@@ -24,8 +18,13 @@ class Miner.Session
       return Miner.Error.INSUFFICIENT_FUNDS
 
     tile.buildingType = buildingType
+    tile.remainingBuildingConstructionTime = buildingType.constructionTime
 
     return Miner.Error.SUCCESS
 
+  advanceTime: (world) ->
+    world.advanceTime()
+
   @newSession: ->
     new Session()
+

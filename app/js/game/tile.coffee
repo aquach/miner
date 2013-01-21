@@ -12,7 +12,7 @@ class Miner.Tile
     @level = level
     @terrainType = null
     @buildingType = null
-    @buildingUnderConstruction = false
+    @remainingBuildingConstructionTime = 0
 
   isAdjacentTo: (tile) ->
     if tile.level != @level
@@ -26,4 +26,8 @@ class Miner.Tile
     return false
 
   isConstructedBuilding: ->
-    @buildingType != null and @buildingUnderConstruction == false
+    @buildingType != null and @remainingBuildingConstructionTime == 0
+
+  isUnderConstruction: ->
+    @buildingType != null and @remainingBuildingConstructionTime > 0
+

@@ -5,6 +5,8 @@ class Miner.World
     @height = height
     @levels = levels
 
+  # Tiles
+
   _setTile: (tile) ->
     @tiles[@_index(tile.col, tile.row, tile.level)] = tile
     
@@ -21,8 +23,10 @@ class Miner.World
   _index: (col, row, level) ->
     level * (@width * @height) + row * @width + col
 
-  countBuildings: (buildingType) ->
-    (1 for tile in @tiles when tile.buildingType == buildingType).length
+  # Buildings
+
+  countConstructedBuildings: (buildingType) ->
+    (1 for tile in @tiles when tile.buildingType == buildingType and tile.isConstructedBuilding()).length
 
   mothershipTile: ->
     _.find(@tiles, (tile) -> tile.buildingType == Miner.BuildingType.MOTHERSHIP)
@@ -40,7 +44,14 @@ class Miner.World
   
   allPotentialBuildingTiles: (buildingType) ->
     tile for tile in @tiles when @canPlaceBuilding(tile, buildingType) == Miner.Error.SUCCESS
+
+  advanceTime: ->
+    for tile in @tiles
+      if tile.isUnderConstruction()
+        tile.remainingBuildingConstructionTime--
     
+  # World generation
+
   @newWorld: (width, height, levels, mountainProbability, veinProbability, mothershipParams = null) ->
     world = new World(width, height, levels)
     for level in [0..levels - 1]
@@ -70,3 +81,4 @@ class Miner.World
     tile.buildingType = Miner.BuildingType.MOTHERSHIP
 
     world
+

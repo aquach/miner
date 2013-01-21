@@ -49,8 +49,8 @@ describe 'World', ->
     world.getTile(0, 0, 0).buildingType = Miner.BuildingType.MINE
     world.getTile(1, 1, 1).buildingType = Miner.BuildingType.PROCESSOR
     world.getTile(2, 2, 2).buildingType = Miner.BuildingType.MINE
-    expect(world.countBuildings(Miner.BuildingType.MINE)).toBe(2)
-    expect(world.countBuildings(Miner.BuildingType.PROCESSOR)).toBe(1)
+    expect(world.countConstructedBuildings(Miner.BuildingType.MINE)).toBe(2)
+    expect(world.countConstructedBuildings(Miner.BuildingType.PROCESSOR)).toBe(1)
 
   describe 'when finding valid building locations', ->
     beforeEach ->
@@ -86,3 +86,23 @@ describe 'World', ->
       it 'detects when buildings can be built over', ->
         expect(@world.canPlaceBuilding(@mine, Miner.BuildingType.BULLDOZER))
           .toEqual(Miner.Error.SUCCESS)
+  
+  describe 'when advancing time', ->
+    beforeEach ->
+      @world = Miner.World.newWorld(5, 5, 10, 0.2, 0.2, { col: 3, row: 3 })
+      @mine = @world.getTile(3, 2, 0)
+      @mine.terrainType = Miner.TerrainType.BARE
+      @mine.buildingType = Miner.BuildingType.MINE
+
+    it 'ticks down remaining time for buildings under construction', ->
+      @mine.remainingBuildingConstructionTime = 1
+      @world.advanceTime()
+      expect(@mine.isConstructedBuilding()).toBe(true)
+
+    it 'does not tick down remaining time for already constructed buildings', ->
+      @mine.remainingBuildingConstructionTime = 1
+      for t in [0..3]
+        @world.advanceTime()
+      expect(@mine.remainingBuildingConstructionTime).toBe(0)
+      expect(@world.mothershipTile().remainingBuildingConstructionTime).toBe(0)
+
