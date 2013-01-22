@@ -26,11 +26,12 @@ class Miner.Tile
     return false
 
   isConstructedBuilding: ->
-    @buildingType != null and @remainingBuildingConstructionTime == 0
+    @buildingType? and @remainingBuildingConstructionTime == 0
 
   isUnderConstruction: ->
-    @buildingType != null and @remainingBuildingConstructionTime > 0
+    @buildingType? and @remainingBuildingConstructionTime > 0
 
   placeBuilding: (buildingType) ->
     @buildingType = buildingType
     @remainingBuildingConstructionTime = buildingType.constructionTime
+

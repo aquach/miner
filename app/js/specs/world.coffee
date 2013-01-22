@@ -131,3 +131,12 @@ describe 'World', ->
       mine.buildingType = Miner.BuildingType.MINE
       mine.remainingBuildingConstructionTime = 1
       @world.advanceTime()
+
+    it 'will not build new mine if a building already exists', ->
+      @mine.remainingBuildingConstructionTime = 1
+      belowTile = @world.getTile(@mine.col, @mine.row, @mine.level + 1)
+      belowTile.terrainType = Miner.TerrainType.BARE
+      belowTile.buildingType = Miner.BuildingType.PROCESSOR
+      @world.advanceTime()
+      expect(belowTile.buildingType).toBe(Miner.BuildingType.PROCESSOR)
+

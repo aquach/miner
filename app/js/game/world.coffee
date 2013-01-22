@@ -37,7 +37,7 @@ class Miner.World
       Miner.Error.NOT_ADJACENT
     else if tile.terrainType not in buildingType.validTerrain
       Miner.Error.INVALID_TERRAIN
-    else if tile.buildingType != null and not buildingType.canBuildOverBuildings
+    else if tile.buildingType? and not buildingType.canBuildOverBuildings
       Miner.Error.TILE_FILLED
     else
       Miner.Error.SUCCESS
@@ -60,7 +60,8 @@ class Miner.World
         tile.terrainType = Miner.TerrainType.BARE
       else if tile.buildingType == Miner.BuildingType.MINE
         belowTile = @tryGetTile(tile.col, tile.row, tile.level + 1)
-        belowTile?.placeBuilding(Miner.BuildingType.MINE)
+        if belowTile? and not belowTile.buildingType?
+          belowTile.placeBuilding(Miner.BuildingType.MINE)
 
     
   # World generation
