@@ -51,7 +51,7 @@ class Miner.Session
     if not @_deductMoney(buildingType.cost)
       return Miner.Error.INSUFFICIENT_FUNDS
 
-    world.placeBuilding(tile, buildingType)
+    tile.placeBuilding(buildingType)
 
     return Miner.Error.SUCCESS
 

@@ -52,7 +52,7 @@ describe 'World', ->
     world.getTile(2, 2, 2).buildingType = Miner.BuildingType.MINE
     expect(world.countConstructedBuildings(Miner.BuildingType.MINE)).toBe(2)
     expect(world.countConstructedBuildings(Miner.BuildingType.PROCESSOR)).toBe(1)
-
+    
   describe 'when finding valid building locations', ->
     beforeEach ->
       @world = Miner.World.newWorld(5, 5, 10, 0.2, 0.2, { col: 3, row: 3 })

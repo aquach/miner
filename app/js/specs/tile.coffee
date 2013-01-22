@@ -26,3 +26,9 @@ describe 'Tile', ->
     tile.remainingBuildingConstructionTime = 1
     expect(tile.isUnderConstruction()).toBe(true)
 
+  it 'places buildings', ->
+    tile = new Miner.Tile(0, 0, 0)
+    tile.placeBuilding(Miner.BuildingType.MINE)
+    expect(tile.buildingType).toBe(Miner.BuildingType.MINE)
+    expect(tile.remainingBuildingConstructionTime).toBe(Miner.BuildingType.MINE.constructionTime)
+

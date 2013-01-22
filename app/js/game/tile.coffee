@@ -31,3 +31,6 @@ class Miner.Tile
   isUnderConstruction: ->
     @buildingType != null and @remainingBuildingConstructionTime > 0
 
+  placeBuilding: (buildingType) ->
+    @buildingType = buildingType
+    @remainingBuildingConstructionTime = buildingType.constructionTime

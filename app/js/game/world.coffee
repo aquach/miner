@@ -41,10 +41,6 @@ class Miner.World
       Miner.Error.TILE_FILLED
     else
       Miner.Error.SUCCESS
-
-  placeBuilding: (tile, buildingType) ->
-    tile.buildingType = buildingType
-    tile.remainingBuildingConstructionTime = buildingType.constructionTime
   
   allPotentialBuildingTiles: (buildingType) ->
     tile for tile in @tiles when @canPlaceBuilding(tile, buildingType) == Miner.Error.SUCCESS
@@ -64,8 +60,7 @@ class Miner.World
         tile.terrainType = Miner.TerrainType.BARE
       else if tile.buildingType == Miner.BuildingType.MINE
         belowTile = @tryGetTile(tile.col, tile.row, tile.level + 1)
-        if belowTile?
-          @placeBuilding(belowTile, Miner.BuildingType.MINE)
+        belowTile?.placeBuilding(Miner.BuildingType.MINE)
 
     
   # World generation
