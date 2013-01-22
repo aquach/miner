@@ -74,3 +74,4 @@ class Miner.Session
     new Miner.Session()
 
 _.extend(Miner.Session.prototype, Workers)
+

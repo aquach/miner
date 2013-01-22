@@ -1,3 +1,4 @@
 $(->
   game = Miner.Game.createNewGame
 )
+

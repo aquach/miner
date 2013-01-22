@@ -63,3 +63,4 @@ for type of Miner.BuildingType
     workerCapacity: 0
     canBreakDown: false
   )
+
