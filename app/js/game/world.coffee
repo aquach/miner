@@ -41,14 +41,32 @@ class Miner.World
       Miner.Error.TILE_FILLED
     else
       Miner.Error.SUCCESS
+
+  placeBuilding: (tile, buildingType) ->
+    tile.buildingType = buildingType
+    tile.remainingBuildingConstructionTime = buildingType.constructionTime
   
   allPotentialBuildingTiles: (buildingType) ->
     tile for tile in @tiles when @canPlaceBuilding(tile, buildingType) == Miner.Error.SUCCESS
 
   advanceTime: ->
+    finishedTiles = []
     for tile in @tiles
       if tile.isUnderConstruction()
         tile.remainingBuildingConstructionTime--
+        if tile.remainingBuildingConstructionTime == 0
+          finishedTiles.push(tile)
+
+    # So that a tile doesn't get updated by an effect earlier in the same update.
+    for tile in finishedTiles
+      if tile.buildingType == Miner.BuildingType.BULLDOZER
+        tile.buildingType = null
+        tile.terrainType = Miner.TerrainType.BARE
+      else if tile.buildingType == Miner.BuildingType.MINE
+        belowTile = @tryGetTile(tile.col, tile.row, tile.level + 1)
+        if belowTile?
+          @placeBuilding(belowTile, Miner.BuildingType.MINE)
+
     
   # World generation
 
@@ -59,11 +77,11 @@ class Miner.World
         for col in [0..width - 1]
           tile = new Miner.Tile(col, row, level)
 
-          rand = Math.random()
-          if rand < mountainProbability
-            tile.terrainType = Miner.TerrainType.MOUNTAIN
-          else if rand < mountainProbability + veinProbability and
-            world.tryGetTile(col, row, level - 1)?.terrainType != Miner.TerrainType.VEIN
+          if world.tryGetTile(col, row, level - 1)?.terrainType != Miner.TerrainType.VEIN
+            rand = Math.random()
+            if rand < mountainProbability
+              tile.terrainType = Miner.TerrainType.MOUNTAIN
+            else if rand < mountainProbability + veinProbability
               tile.terrainType = Miner.TerrainType.VEIN
           else
             tile.terrainType = Miner.TerrainType.ROUGH

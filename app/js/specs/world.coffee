@@ -6,18 +6,19 @@ describe 'World', ->
       expect(world.tiles.length).toBe width * height * levels
       expect(world.tiles[0]).not.toBeUndefined()
 
-    it 'makes new worlds where veins are never above other veins', ->
+    it 'makes new worlds where veins are only above rough', ->
       height = 100
-      world = Miner.World.newWorld(1, 1, height, 0.0, 1.0)
+      world = Miner.World.newWorld(1, 1, height, 0.5, 0.5)
       for level in [0..height - 1]
         tile = world.getTile(0, 0, level)
+        aboveTile = world.tryGetTile(0, 0, level - 1)
         expectedTile = (if level == 0
           Miner.TerrainType.BARE
-        else if level % 2 == 0
-          Miner.TerrainType.VEIN
-        else
-          Miner.TerrainType.ROUGH)
-        expect(tile.terrainType).toBe(expectedTile)
+        else if aboveTile?.terrainType == Miner.TerrainType.VEIN
+          Miner.TerrainType.ROUGH
+        )
+        if expectedTile
+          expect(tile.terrainType).toBe(expectedTile)
 
     describe 'when setting mothership', ->
       it 'always constructs worlds with a mothership on the surface', ->
@@ -88,8 +89,10 @@ describe 'World', ->
           .toEqual(Miner.Error.SUCCESS)
   
   describe 'when advancing time', ->
+    LEVELS = 10
+
     beforeEach ->
-      @world = Miner.World.newWorld(5, 5, 10, 0.2, 0.2, { col: 3, row: 3 })
+      @world = Miner.World.newWorld(5, 5, LEVELS, 0.2, 0.2, { col: 3, row: 3 })
       @mine = @world.getTile(3, 2, 0)
       @mine.terrainType = Miner.TerrainType.BARE
       @mine.buildingType = Miner.BuildingType.MINE
@@ -106,3 +109,25 @@ describe 'World', ->
       expect(@mine.remainingBuildingConstructionTime).toBe(0)
       expect(@world.mothershipTile().remainingBuildingConstructionTime).toBe(0)
 
+    it 'bulldozes land', ->
+      bulldozer = @world.getTile(2, 2, 0)
+      bulldozer.terrainType = Miner.TerrainType.ROUGH
+      bulldozer.buildingType = Miner.BuildingType.BULLDOZER
+      bulldozer.remainingBuildingConstructionTime = 1
+      @world.advanceTime()
+      expect(bulldozer.buildingType).toBe(null)
+      expect(bulldozer.terrainType).toBe(Miner.TerrainType.BARE)
+
+    it 'begins construction of new mine below', ->
+      @mine.remainingBuildingConstructionTime = 1
+      @world.advanceTime()
+      belowTile = @world.getTile(@mine.col, @mine.row, @mine.level + 1)
+      expect(belowTile.buildingType).toBe(Miner.BuildingType.MINE)
+      expect(belowTile.remainingBuildingConstructionTime).toBe(Miner.BuildingType.MINE.constructionTime)
+
+    it 'will not build new mine on the last level', ->
+      mine = @world.getTile(3, 2, LEVELS - 1)
+      mine.terrainType = Miner.TerrainType.BARE
+      mine.buildingType = Miner.BuildingType.MINE
+      mine.remainingBuildingConstructionTime = 1
+      @world.advanceTime()

@@ -12,3 +12,12 @@ Miner.Util.createEnum = (list...) ->
   )
   obj
 
+_.mixin(
+  clamp: (value, low, high) ->
+    if value < low
+      low
+    else if value > high
+      high
+    else
+      value
+)

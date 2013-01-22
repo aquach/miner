@@ -37,3 +37,43 @@ describe 'Session', ->
           @session.advanceTime(@world)
         expect(@tile.isUnderConstruction()).toBe(false)
 
+  describe 'workers', ->
+    beforeEach -> 
+      @session = Miner.Session.newSession()
+
+    it 'pays workers their wage', ->
+      @session.money = 200
+      @session.workers = 10
+      @session.wage = 3
+      @session.payWorkers()
+      expect(@session.money).toBe(200 - 10 * 3)
+
+    it 'changes wage if there is not enough money', ->
+      @session.money = 200
+      @session.workers = 11
+      @session.wage = 300
+      @session.payWorkers()
+      expect(@session.money).toBe(2)
+      expect(@session.wage).toBe(18)
+
+    it 'hires people', ->
+      @session.workers = 0
+      @session.hireWorkers(20)
+      @session.addNewHires()
+      expect(@session.workers).toBeGreaterThan(0)
+      expect(@session.workersRequested).toBeLessThan(20)
+      for i in [0..50]
+        @session.addNewHires()
+      expect(@session.workers).toBe(20)
+      expect(@session.workersRequested).toBe(0)
+
+    it 'fires people', ->
+      @session.workers = 50
+      @session.fireWorkers(20)
+      expect(@session.workers).toBe(30)
+
+    it 'does not go below 0 workers when firing people', ->
+      @session.workers = 5
+      @session.fireWorkers(20)
+      expect(@session.workers).toBe(0)
+
