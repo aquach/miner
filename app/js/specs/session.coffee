@@ -77,3 +77,49 @@ describe 'Session', ->
       @session.fireWorkers(20)
       expect(@session.workers).toBe(0)
 
+    it 'computes morale', ->
+      @session.morale = 1
+      @session.wage = 0
+      @session.computeMorale(0, 0, 0)
+      expect(@session.morale).toBeLessThan(1)
+
+    it 'checks for worker deaths from lack of health care', ->
+      @session.workers = 10
+      _.times(30, => @session.checkForDeaths(1, 0))
+      expect(@session.workers).toBeLessThan(10)
+
+    it 'checks for worker deaths from starving', ->
+      @session.workers = 10
+      _.times(30, => @session.checkForDeaths(0, 1))
+      expect(@session.workers).toBeLessThan(10)
+    
+    it 'checks for workers staying when they are happy', ->
+      @session.morale = 1
+      @session.workers = 30
+      _.times(30, => @session.checkForLeavingWorkers())
+      expect(@session.workers).toBe(30)
+
+    it 'checks for workers leaving when they are sad', ->
+      @session.morale = 0
+      @session.workers = 30
+      _.times(30, => @session.checkForLeavingWorkers())
+      expect(@session.workers).toBeLessThan(30)
+
+  describe 'when mining for ore', ->
+    beforeEach ->
+      @session = Miner.Session.newSession()
+
+    it 'drops ore if it cannot be processed', ->
+      @session.ore = 0
+      @session.mineForOre(40, 25, 50)
+      expect(@session.ore).toBe(25)
+
+    it 'only adds what can be mined', ->
+      @session.ore = 0
+      @session.mineForOre(25, 40, 50)
+      expect(@session.ore).toBe(25)
+
+    it 'caps the amount at storage capacity', ->
+      @session.ore = 50
+      @session.mineForOre(25, 40, 50)
+      expect(@session.ore).toBe(50)

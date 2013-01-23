@@ -4,6 +4,7 @@ Miner.Error = Miner.Util.createEnum(
   'OUT_OF_BOUNDS',
   'INVALID_TERRAIN',
   'TILE_FILLED',
-  'NOT_ADJACENT'
+  'NOT_ADJACENT',
+  'SURFACE_ONLY'
 )
 

@@ -20,5 +20,7 @@ _.mixin(
       high
     else
       value
+  sum: (list) ->
+    _.reduce(list, ((memo, num) -> memo + num), 0)
 )
 

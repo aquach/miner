@@ -25,6 +25,9 @@ class Miner.World
 
   # Buildings
 
+  aggregateProperty: (property) ->
+    _.sum([ tile.buildingType?[property] for tile in @tiles ])
+
   countConstructedBuildings: (buildingType) ->
     (1 for tile in @tiles when tile.buildingType == buildingType and tile.isConstructedBuilding()).length
 
@@ -39,6 +42,8 @@ class Miner.World
       Miner.Error.INVALID_TERRAIN
     else if tile.buildingType? and not buildingType.canBuildOverBuildings
       Miner.Error.TILE_FILLED
+    else if buildingType.surfaceOnly and tile.level != 0
+      Miner.Error.SURFACE_ONLY
     else
       Miner.Error.SUCCESS
   
@@ -62,7 +67,6 @@ class Miner.World
         belowTile = @tryGetTile(tile.col, tile.row, tile.level + 1)
         if belowTile? and not belowTile.buildingType?
           belowTile.placeBuilding(Miner.BuildingType.MINE)
-
     
   # World generation
 

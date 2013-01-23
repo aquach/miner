@@ -67,6 +67,15 @@ describe 'World', ->
       expect(@world.canPlaceBuilding(mountain, Miner.BuildingType.PROCESSOR))
         .toEqual(Miner.Error.INVALID_TERRAIN)
 
+    it 'detects when buildings are surface only', ->
+      mine = @world.getTile(3, 2, 1)
+      mine.terrainType = Miner.TerrainType.BARE
+      mine.buildingType = Miner.TerrainType.BARE
+      tile = @world.getTile(3, 3, 1)
+      tile.terrainType = Miner.TerrainType.BARE
+      expect(@world.canPlaceBuilding(tile, Miner.BuildingType.PROCESSOR))
+        .toEqual(Miner.Error.SURFACE_ONLY)
+
     it 'finds all potential building locations', ->
       @world.getTile(3, 2, 0).terrainType = Miner.TerrainType.MOUNTAIN
       @world.getTile(3, 4, 0).terrainType = Miner.TerrainType.BARE
