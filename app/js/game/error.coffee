@@ -5,6 +5,8 @@ Miner.Error = Miner.Util.createEnum(
   'INVALID_TERRAIN',
   'TILE_FILLED',
   'NOT_ADJACENT',
-  'SURFACE_ONLY'
+  'SURFACE_ONLY',
+  'INSUFFICIENT_ORE',
+  'GAME_OVER'
 )
 
