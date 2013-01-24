@@ -64,6 +64,12 @@ Miner.BuildingType =
     workersRequired: 5
     canBreakDown: true
     healthProduction: 25
+  SPACEBANK:
+    id: 10
+    cost: 20000
+    upgradesFrom: 5
+    constructionTime: 5
+    workersRequired: 20
 
 for type of Miner.BuildingType
   _.defaults(Miner.BuildingType[type],
@@ -80,5 +86,6 @@ for type of Miner.BuildingType
     foodProduction: 0
     healthProduction: 0
     surfaceOnly: false
+    upgradesFrom: null
   )
 
