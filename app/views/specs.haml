@@ -9,7 +9,7 @@
     <script type="text/javascript" src="jasmine/jasmine-html.js"></script>
     %script(type="text/javascript" src="third-party-js/underscore-min.js")
 
-    - app_files.each do |js|
+    - engine_files.each do |js|
       %script(type="text/javascript" src="#{js}")
 
     - spec_files.each do |js|

@@ -54,7 +54,7 @@ class Miner.Session
     @checkForLeavingWorkers()
     @checkForDeaths(healthRating, foodRating)
 
-    if world.countConstructedBuildings(BuildingType.SPACEBANK) > 0
+    if world.countConstructedBuildings(Miner.BuildingType.SPACEBANK) > 0
       # You don't earn interest on newly mined ore, only on ore you had from last turn.
       @earnInterest()
 

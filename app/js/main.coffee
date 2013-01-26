@@ -1,4 +1,0 @@
-$(->
-  game = Miner.Game.createNewGame
-)
-

@@ -20,6 +20,12 @@ describe 'World', ->
         if expectedTile
           expect(tile.terrainType).toBe(expectedTile)
 
+    it 'sets terrain type for all tiles', ->
+      world = Miner.World.newWorld(10, 1, 1, 0.02, 0.02)
+      console.log(world)
+      for col in [0..9]
+        expect(world.getTile(col, 0, 0).terrainType).not.toBeNull()
+
     describe 'when setting mothership', ->
       it 'always constructs worlds with a mothership on the surface', ->
         world = Miner.World.newWorld(1, 1, 10, 0.2, 0.2)

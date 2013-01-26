@@ -13,12 +13,17 @@ THIRD_PARTY_JS_FILES = [
   '**/*'
 ]
 
-JS_FILES = [
+ENGINE_JS_FILES = [
   'setup',
-  'util',
-  'workers',
-  'money',
-  '**/*'
+  'engine/util',
+  'engine/workers',
+  'engine/money',
+  'engine/**/*'
+]
+
+UI_JS_FILES = [
+  'ui/**/*',
+  'main'
 ]
 
 SPEC_FILES = [
@@ -44,8 +49,16 @@ helpers do
     }
   end
 
+  def engine_files
+    find_js(ENGINE_JS_FILES, 'js/game/')
+  end
+
+  def ui_files
+    find_js(UI_JS_FILES, 'js/game/')
+  end
+
   def app_files
-    find_js(JS_FILES, 'js/game/')
+    engine_files + ui_files
   end
 
   def spec_files

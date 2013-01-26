@@ -83,7 +83,8 @@ class Miner.World
               tile.terrainType = Miner.TerrainType.MOUNTAIN
             else if rand < mountainProbability + veinProbability
               tile.terrainType = Miner.TerrainType.VEIN
-          else
+
+          if not tile.terrainType?
             tile.terrainType = Miner.TerrainType.ROUGH
 
           world._setTile(tile)
