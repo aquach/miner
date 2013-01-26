@@ -13,7 +13,12 @@ Miner.Money =
       return false
 
     @money -= amount
+    @trigger('money:loss', amount)
     return true
+
+  _gainMoney: (amount) ->
+    @money += amount
+    @trigger('money:gain', amount)
 
   START_PRICE: 20
   MIN_PRICE: 5
@@ -33,7 +38,7 @@ Miner.Money =
       return Miner.Error.INSUFFICIENT_ORE
 
     revenue = amount * @orePrice
-    @money += revenue
+    @_gainMoney(revenue)
     @ore -= amount
 
     Miner.Error.SUCCESS
@@ -41,7 +46,7 @@ Miner.Money =
   CONVERSION: 1
   earnInterest: ->
     revenue = @ore * @CONVERSION
-    @money += revenue
+    @_gainMoney(revenue)
 
   nextCollectionGoal: ->
     _.find(COLLECTION_DAYS, (goal) => @days < goal.day)

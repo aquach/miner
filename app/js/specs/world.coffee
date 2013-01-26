@@ -22,7 +22,6 @@ describe 'World', ->
 
     it 'sets terrain type for all tiles', ->
       world = Miner.World.newWorld(10, 1, 1, 0.02, 0.02)
-      console.log(world)
       for col in [0..9]
         expect(world.getTile(col, 0, 0).terrainType).not.toBeNull()
 

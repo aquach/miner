@@ -74,4 +74,5 @@ class Miner.Session
 
 _.extend(Miner.Session.prototype, Miner.Workers)
 _.extend(Miner.Session.prototype, Miner.Money)
+_.extend(Miner.Session.prototype, Backbone.Events)
 
