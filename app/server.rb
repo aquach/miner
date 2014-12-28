@@ -6,7 +6,7 @@ require 'rubygems'
 require 'sinatra'
 
 set :port, 8000
-set :views, :coffee => 'js', :less => 'css', :default => 'views'
+set :views, :less => 'css', :default => 'views'
 
 THIRD_PARTY_JS_FILES = [
   'underscore-min',
@@ -31,16 +31,14 @@ SPEC_FILES = [
 ]
 
 helpers do
-  def find_template(views, name, engine, &block)
-    _, folder = views.detect { |k,v| engine == Tilt[k] }
-    folder ||= views[:default]
-    super(folder, name, engine, &block)
-  end
+  #def find_template(views, name, engine, &block)
+  #  _, folder = views.detect { |k,v| engine == Tilt[k] }
+  #  folder ||= views[:default]
+  #  super(folder, name, engine, &block)
+  #end
 
   def find_js(globs, dir)
-    globs.map { |glob| Dir[dir + glob + '.{js,coffee}'] }.flatten.uniq.map { |filename|
-      filename.gsub(/coffee$/, 'js')
-    }
+    globs.map { |glob| Dir[dir + glob + '.js'] }.flatten.uniq
   end
 
   def third_party_js_files
