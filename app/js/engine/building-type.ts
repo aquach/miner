@@ -1,21 +1,21 @@
 /// <reference path="terrain-type.ts" />
 
-interface BuildingType {
-  id: number;
-  name: string;
-  cost: number;
-  validTerrain: TerrainType;
-  constructionTime: number;
-  oreProduction: number;
-  miningCapacity: number;
-  labCapacity: number;
-  sickbayCapacity: number;
-  opsCapacity: number;
-}
+module Miner {
+  export interface BuildingType {
+    id: number;
+    name: string;
+    cost: number;
+    validTerrain: TerrainType;
+    constructionTime: number;
+    oreProduction: number;
+    miningCapacity: number;
+    labCapacity: number;
+    sickbayCapacity: number;
+    opsCapacity: number;
+  }
 
-module Buildings {
-  export var buildings: { [k: string]: BuildingType } = {
-    MOTHERSHIP: {
+  export module BuildingType {
+    export var MOTHERSHIP: BuildingType = {
       id: 1,
       name: 'Mothership',
       cost: 0,
@@ -26,8 +26,9 @@ module Buildings {
       labCapacity: 5,
       sickbayCapacity: 5,
       opsCapacity: 5
-    },
-    MINE: {
+    };
+
+    export var MINE: BuildingType = {
       id: 1,
       name: 'Mine',
       cost: 600,
@@ -38,8 +39,9 @@ module Buildings {
       labCapacity: 0,
       sickbayCapacity: 0,
       opsCapacity: 0
-    },
-    LAB: {
+    };
+
+     export var LAB: BuildingType = {
       id: 2,
       name: 'Lab',
       cost: 200,
@@ -50,8 +52,9 @@ module Buildings {
       labCapacity: 5,
       sickbayCapacity: 0,
       opsCapacity: 0
-    },
-    SICKBAY: {
+    };
+
+    export var SICKBAY: BuildingType = {
       id: 3,
       name: 'Sickbay',
       cost: 200,
@@ -62,8 +65,9 @@ module Buildings {
       labCapacity: 0,
       sickbayCapacity: 5,
       opsCapacity: 0
-    },
-    OPS: {
+    };
+
+    export var OPS: BuildingType = {
       id: 4,
       name: 'Ops Center',
       cost: 200,
@@ -74,6 +78,8 @@ module Buildings {
       labCapacity: 0,
       sickbayCapacity: 0,
       opsCapacity: 5
-    }
-  };
+    };
+
+    export var buildableBuildings = [ MINE, LAB, SICKBAY, OPS ];
+  }
 }
