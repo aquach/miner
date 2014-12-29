@@ -1,1 +1,3 @@
 *.js.map
+miner-generated.d.ts
+miner-generated.js

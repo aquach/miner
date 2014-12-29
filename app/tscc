@@ -1,1 +1,0 @@
-tsc -d --noImplicitAny --sourceMap -w $@
