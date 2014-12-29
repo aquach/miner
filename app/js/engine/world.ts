@@ -7,8 +7,8 @@ module Miner {
   export interface BuildingStats {
     oreProduction: number;
     miningCapacity: number;
-    labCapacity: number;
-    sickbayCapacity: number;
+    techCapacity: number;
+    medicalCapacity: number;
     opsCapacity: number;
   }
 
@@ -39,8 +39,8 @@ module Miner {
       return {
         oreProduction: Util.sum(_.map(this._tiles, t => t.buildingType.oreProduction)),
         miningCapacity: Util.sum(_.map(this._tiles, t => t.buildingType.miningCapacity)),
-        labCapacity: Util.sum(_.map(this._tiles, t => t.buildingType.labCapacity)),
-        sickbayCapacity: Util.sum(_.map(this._tiles, t => t.buildingType.sickbayCapacity)),
+        techCapacity: Util.sum(_.map(this._tiles, t => t.buildingType.techCapacity)),
+        medicalCapacity: Util.sum(_.map(this._tiles, t => t.buildingType.medicalCapacity)),
         opsCapacity: Util.sum(_.map(this._tiles, t => t.buildingType.opsCapacity))
       };
     }
@@ -69,10 +69,10 @@ module Miner {
       return _.filter(this._tiles, t => this.canPlaceBuilding(t, buildingType) === Result.SUCCESS);
     }
 
-    advanceTime() {
+    advanceConstruction() {
       _.each(this._tiles, t => {
         if (t.isUnderConstruction())
-          t.remainingBuildingConstructionTime--;
+          t.remainingBuildingConstructionDays--;
       });
     }
   }

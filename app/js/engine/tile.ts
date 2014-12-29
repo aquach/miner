@@ -9,7 +9,7 @@ module Miner {
       public y: number,
       public terrainType: TerrainType,
       public buildingType: BuildingType,
-      public remainingBuildingConstructionTime: number) {
+      public remainingBuildingConstructionDays: number) {
     }
 
     distanceToTile(tile: Tile) {
@@ -31,16 +31,16 @@ module Miner {
     }
 
     isConstructedBuilding() {
-      return this.buildingType !== null && this.remainingBuildingConstructionTime === 0;
+      return this.buildingType !== null && this.remainingBuildingConstructionDays === 0;
     }
 
     isUnderConstruction() {
-      return this.buildingType !== null && this.remainingBuildingConstructionTime > 0;
+      return this.buildingType !== null && this.remainingBuildingConstructionDays > 0;
     }
 
     placeBuilding(buildingType: BuildingType) {
       this.buildingType = buildingType;
-      this.remainingBuildingConstructionTime = buildingType.constructionTime;
+      this.remainingBuildingConstructionDays = buildingType.constructionDays;
     }
   }
 }

@@ -6,11 +6,11 @@ module Miner {
     name: string;
     cost: number;
     validTerrain: TerrainType;
-    constructionTime: number;
+    constructionDays: number;
     oreProduction: number;
     miningCapacity: number;
-    labCapacity: number;
-    sickbayCapacity: number;
+    techCapacity: number;
+    medicalCapacity: number;
     opsCapacity: number;
   }
 
@@ -20,11 +20,11 @@ module Miner {
       name: 'Mothership',
       cost: 0,
       validTerrain: TerrainType.BARE,
-      constructionTime: 0,
+      constructionDays: 0,
       oreProduction: 1,
       miningCapacity: 5,
-      labCapacity: 5,
-      sickbayCapacity: 5,
+      techCapacity: 5,
+      medicalCapacity: 5,
       opsCapacity: 5
     };
 
@@ -33,11 +33,11 @@ module Miner {
       name: 'Mine',
       cost: 600,
       validTerrain: TerrainType.VEIN,
-      constructionTime: 15,
+      constructionDays: 15,
       oreProduction: 10,
       miningCapacity: 5,
-      labCapacity: 0,
-      sickbayCapacity: 0,
+      techCapacity: 0,
+      medicalCapacity: 0,
       opsCapacity: 0
     };
 
@@ -46,11 +46,11 @@ module Miner {
       name: 'Lab',
       cost: 200,
       validTerrain: TerrainType.BARE,
-      constructionTime: 5,
+      constructionDays: 5,
       oreProduction: 0,
       miningCapacity: 0,
-      labCapacity: 5,
-      sickbayCapacity: 0,
+      techCapacity: 5,
+      medicalCapacity: 0,
       opsCapacity: 0
     };
 
@@ -59,11 +59,11 @@ module Miner {
       name: 'Sickbay',
       cost: 200,
       validTerrain: TerrainType.BARE,
-      constructionTime: 5,
+      constructionDays: 5,
       oreProduction: 0,
       miningCapacity: 0,
-      labCapacity: 0,
-      sickbayCapacity: 5,
+      techCapacity: 0,
+      medicalCapacity: 5,
       opsCapacity: 0
     };
 
@@ -72,11 +72,11 @@ module Miner {
       name: 'Ops Center',
       cost: 200,
       validTerrain: TerrainType.BARE,
-      constructionTime: 5,
+      constructionDays: 5,
       oreProduction: 0,
       miningCapacity: 0,
-      labCapacity: 0,
-      sickbayCapacity: 0,
+      techCapacity: 0,
+      medicalCapacity: 0,
       opsCapacity: 5
     };
 
