@@ -5,6 +5,13 @@
 /// <reference path="../miner.ts" />
 
 module Miner {
+  export interface WorkerStats {
+    miningSkill: number;
+    techSkill: number;
+    medicalSkill: number;
+    opsSkill: number;
+  }
+
   export interface CollectionGoal {
     currentDay: number;
     amount: number;
@@ -93,7 +100,7 @@ module Miner {
     }
 
     buildBuilding(x: number, y: number, b: BuildingType): Result {
-      var isPlaceable = this.world.canPlaceBuilding(x, y, b)
+      var isPlaceable = this.world.canPlaceBuilding(x, y, b);
       if (isPlaceable != Result.SUCCESS)
         return isPlaceable;
 
@@ -107,8 +114,22 @@ module Miner {
     }
 
     _mineForOre() {
-      // TODO
-      this.ore += 10;
+      this.ore += this.world.buildingStats().oreProduction * this.miningSaturation();
+    }
+
+    miningSaturation() {
+      var numMines = this.world.countConstructedBuildings(BuildingType.MINE);
+      var totalSkill = this.workerStats().miningSkill;
+      return numMines == 0 ? 1 : Util.clamp(totalSkill / numMines, 0, 1);
+    }
+
+    workerStats(): WorkerStats {
+      return {
+        miningSkill: Util.sum(_.map(this.workers, w => w.miningSkill)),
+        techSkill: Util.sum(_.map(this.workers, w => w.techSkill)),
+        medicalSkill: Util.sum(_.map(this.workers, w => w.medicalSkill)),
+        opsSkill: Util.sum(_.map(this.workers, w => w.opsSkill))
+      };
     }
 
     advanceToNextDay(): Result {

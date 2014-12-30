@@ -16,7 +16,7 @@ module Miner {
     }
 
     render() {
-      var oreString = Util.numberWithCommas(game.ore) + ' @ ' + Util.numberWithCommas(game.orePrice()) + 'z';
+      var oreString = Util.numberWithCommas(game.ore) + ' tons @ ' + Util.numberWithCommas(game.orePrice()) + 'z / ton';
       this.$('.ore-ticker').text(oreString);
       this.$('.sell-ore').toggle(game.ore > 0);
       return this;

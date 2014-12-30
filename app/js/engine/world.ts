@@ -58,21 +58,18 @@ module Miner {
     // Buildings
 
     buildingStats(): BuildingStats {
+      var tilesWithBuildings = _.filter(this.getAllTiles(), t => t.buildingType !== null);
       return {
-        oreProduction: Util.sum(_.map(this._tiles, t => t.buildingType.oreProduction)),
-        miningCapacity: Util.sum(_.map(this._tiles, t => t.buildingType.miningCapacity)),
-        techCapacity: Util.sum(_.map(this._tiles, t => t.buildingType.techCapacity)),
-        medicalCapacity: Util.sum(_.map(this._tiles, t => t.buildingType.medicalCapacity)),
-        opsCapacity: Util.sum(_.map(this._tiles, t => t.buildingType.opsCapacity))
+        oreProduction: Util.sum(_.map(tilesWithBuildings, t => t.buildingType.oreProduction)),
+        miningCapacity: Util.sum(_.map(tilesWithBuildings, t => t.buildingType.miningCapacity)),
+        techCapacity: Util.sum(_.map(tilesWithBuildings, t => t.buildingType.techCapacity)),
+        medicalCapacity: Util.sum(_.map(tilesWithBuildings, t => t.buildingType.medicalCapacity)),
+        opsCapacity: Util.sum(_.map(tilesWithBuildings, t => t.buildingType.opsCapacity))
       };
     }
 
     countConstructedBuildings(buildingType: BuildingType): number {
-      return _.filter(this._tiles, t => t.buildingType === buildingType && t.isConstructedBuilding()).length;
-    }
-
-    mothershipTile() {
-      return _.find(this._tiles, t => t.buildingType == BuildingType.MOTHERSHIP);
+      return _.filter(this.getAllTiles(), t => t.buildingType === buildingType && t.isConstructedBuilding()).length;
     }
 
     placeBuilding(x: number, y: number, buildingType: BuildingType) {
