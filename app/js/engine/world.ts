@@ -58,7 +58,7 @@ module Miner {
     // Buildings
 
     buildingStats(): BuildingStats {
-      var tilesWithBuildings = _.filter(this.getAllTiles(), t => t.buildingType !== null);
+      var tilesWithBuildings = _.filter(this.getAllTiles(), t => t.buildingType !== null && t.isConstructedBuilding());
       return {
         oreProduction: Util.sum(_.map(tilesWithBuildings, t => t.buildingType.oreProduction)),
         miningCapacity: Util.sum(_.map(tilesWithBuildings, t => t.buildingType.miningCapacity)),
@@ -66,6 +66,10 @@ module Miner {
         medicalCapacity: Util.sum(_.map(tilesWithBuildings, t => t.buildingType.medicalCapacity)),
         opsCapacity: Util.sum(_.map(tilesWithBuildings, t => t.buildingType.opsCapacity))
       };
+    }
+
+    numConstructedBuildings(): number {
+      return _.filter(this.getAllTiles(), t => t.isConstructedBuilding()).length;
     }
 
     countConstructedBuildings(buildingType: BuildingType): number {
@@ -76,11 +80,12 @@ module Miner {
       var tile = this.getTile(x, y);
       tile.buildingType = buildingType;
       tile.remainingBuildingConstructionDays = buildingType.constructionDays;
+      dispatcher.trigger('update');
     }
 
     canPlaceBuilding(x: number, y: number, buildingType: BuildingType): Result {
       var tile = this.getTile(x, y);
-      var isAdjacent = _.some(this._tiles, t => t.isConstructedBuilding() && tile.isAdjacentTo(t))
+      var isAdjacent = _.some(this.getAllTiles(), t => t.isConstructedBuilding() && tile.isAdjacentTo(t))
       if (!isAdjacent)
         return Result.NOT_ADJACENT;
       else if (tile.terrainType !== buildingType.validTerrain)
@@ -92,7 +97,7 @@ module Miner {
     }
     
     allPotentialBuildingTiles(buildingType: BuildingType) {
-      return _.filter(this._tiles, t => this.canPlaceBuilding(t.x, t.y, buildingType) === Result.SUCCESS);
+      return _.filter(this.getAllTiles(), t => this.canPlaceBuilding(t.x, t.y, buildingType) === Result.SUCCESS);
     }
 
     advanceConstruction() {

@@ -17,9 +17,12 @@ html {
   .cell {
     position: absolute;
     width: 50px;
-    height: sqrt(3) / 2 * 50px;
+    @height: sqrt(3) / 2 * 50px;
+    height: @height;
+    line-height: @height;
+    white-space: nowrap;
+    font-size: 10px;
     border: 1px solid;
-    line-height: 40px;
     text-align: center;
   }
 }

@@ -35,13 +35,17 @@
           .value.ore
             %span.ore-ticker
             %button.sell-ore Sell
+        .row
+          .label mining
+          .value.mining-saturation
+        .row
+          .label ops
+          .value.operations
 
         .build-panel
           %select
             %option(value="-1") Build some shit
-            %option(value="0") Bulldozer
-            %option(value="1") Mine
-            %option(value="7") Tube
+          %button.done-building Done Building
 
         %button.advance-to-next-day See what tomorrow brings
 

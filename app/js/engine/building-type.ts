@@ -33,7 +33,7 @@ module Miner {
       name: 'Mine',
       cost: 600,
       validTerrain: TerrainType.VEIN,
-      constructionDays: 15,
+      constructionDays: 10,
       oreProduction: 10,
       miningCapacity: 5,
       techCapacity: 0,
@@ -85,7 +85,7 @@ module Miner {
       name: 'Tube',
       cost: 50,
       validTerrain: TerrainType.BARE,
-      constructionDays: 2,
+      constructionDays: 1,
       oreProduction: 0,
       miningCapacity: 0,
       techCapacity: 0,
@@ -93,6 +93,19 @@ module Miner {
       opsCapacity: 0
     };
 
-    export var buildableBuildings = [ MINE, LAB, SICKBAY, OPS, TUBE ];
+    export var SPACEBANK: BuildingType = {
+      id: 6,
+      name: 'Spacebank',
+      cost: 1000,
+      validTerrain: TerrainType.BARE,
+      constructionDays: 5,
+      oreProduction: 0,
+      miningCapacity: 0,
+      techCapacity: 0,
+      medicalCapacity: 0,
+      opsCapacity: 0
+    };
+
+    export var buildableBuildings = [ MINE, LAB, SICKBAY, OPS, TUBE, SPACEBANK ];
   }
 }

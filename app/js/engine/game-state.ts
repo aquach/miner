@@ -17,6 +17,7 @@ module Miner {
     amount: number;
   };
 
+  // TODO
   export var COLLECTION_DAYS: CollectionGoal[] = [
     { currentDay: 30, amount: 250000 },
     { currentDay: 60, amount: 500000 },
@@ -25,8 +26,6 @@ module Miner {
     { currentDay: 150, amount: 5000000 },
     { currentDay: 180, amount: 50000000 }
   ];
-
-  export var INTEREST_RATE: number = 0.01;
 
   export class GameState {
     constructor(
@@ -52,7 +51,7 @@ module Miner {
     }
 
     orePrice(): number {
-      return Math.floor(Math.sin(this.currentDay / 30) * 20 + 10);
+      return Math.floor(Math.sin(this.currentDay / 30) * 20 + 10); // TODO
     }
 
     sellOre(amount: number): { result: Result; soldQuantity?: number; revenue?: number; } {
@@ -67,8 +66,13 @@ module Miner {
       return { result: Result.SUCCESS, soldQuantity: amount, revenue: revenue };
     }
 
+    interestRate() {
+      var hasBank = this.world.countConstructedBuildings(BuildingType.SPACEBANK) > 0;
+      return hasBank ? 0.01 : 0;
+    }
+
     _earnInterest() {
-      var revenue = Math.floor(this.money * INTEREST_RATE);
+      var revenue = Math.floor(this.money * this.interestRate());
       this._gainMoney(revenue);
     }
 
@@ -121,6 +125,14 @@ module Miner {
       var numMines = this.world.countConstructedBuildings(BuildingType.MINE);
       var totalSkill = this.workerStats().miningSkill;
       return numMines == 0 ? 1 : Util.clamp(totalSkill / numMines, 0, 1);
+    }
+
+    operationsPercent() {
+      var numBuildings = this.world.numConstructedBuildings();
+      var numWorkers = this.workers.length;
+      var opsBurden = numBuildings / 5 + numWorkers / 10;
+      var opsSkill = this.workerStats().opsSkill;
+      return opsBurden == 0 ? 1 : opsSkill / opsBurden;
     }
 
     workerStats(): WorkerStats {

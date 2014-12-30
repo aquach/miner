@@ -11,7 +11,18 @@ module Miner {
     }
 
     render() {
-      this.$el.text(grade(game.morale()));
+      var directionalArrow: string;
+      var change = game.morale() - game.yesterdaysMorale;
+      if (Math.abs(change) < 0.01) {
+        directionalArrow = '->';
+      }
+      else if (change < 0) {
+        directionalArrow = 'v';
+      }
+      else if (change > 0) {
+        directionalArrow = '^';
+      }
+      this.$el.text(grade(game.morale()) + ' ' + directionalArrow);
       return this;
     }
   }
