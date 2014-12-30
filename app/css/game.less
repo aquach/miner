@@ -3,16 +3,57 @@
   padding: 0;
 }
 
-.grid {
+html {
+  font-size: 16px;
+  font-family: sans-serif;
+}
+
+.world {
+  position: relative;
+  width: 600px;
+  height: 600px;
   border: 1px solid;
 
-  .row {
-    .cell {
-      display: inline-block;
-      width: 40px;
-      height: 40px;
-      line-height: 40px;
-      text-align: center;
-    }
+  .cell {
+    position: absolute;
+    width: 50px;
+    height: sqrt(3) / 2 * 50px;
+    border: 1px solid;
+    line-height: 40px;
+    text-align: center;
   }
 }
+
+.pane {
+  display: inline-block;
+  vertical-align: top;
+  margin: 10px;
+}
+
+.right-pane {
+  width: 400px;
+  font-size: 24px;
+
+  .row {
+    .label {
+      width: 100px;
+      display: inline-block;
+      text-align: right;
+    }
+    .value {
+      width: 100px;
+      display: inline-block;
+    }
+  }
+
+  .build-panel select {
+    font-size: 24px;
+  }
+
+  .advance-to-next-day {
+    margin: 20px;
+    padding: 10px;
+    font-size: 36px;
+  }
+}
+

@@ -59,7 +59,7 @@ module Miner {
     }
 
     _earnInterest() {
-      var revenue = this.money * INTEREST_RATE;
+      var revenue = Math.floor(this.money * INTEREST_RATE);
       this._gainMoney(revenue);
     }
 
@@ -90,6 +90,24 @@ module Miner {
       }
     }
 
+    buildBuilding(x: number, y: number, b: BuildingType): Result {
+      var isPlaceable = this.world.canPlaceBuilding(x, y, b)
+      if (isPlaceable != Result.SUCCESS)
+        return isPlaceable;
+
+      if (!this._deductMoney(b.cost))
+        return Result.INSUFFICIENT_FUNDS;
+
+      this.world.placeBuilding(x, y, b);
+
+      return Result.SUCCESS;
+    }
+
+    _mineForOre() {
+      // TODO
+      this.ore += 10;
+    }
+
     advanceToNextDay() {
       this.currentDay++;
       this.world.advanceConstruction();
@@ -101,6 +119,31 @@ module Miner {
 
       this.yesterdaysMorale = this.morale();
       _.each(this.workers, w => w.advanceMorale(1)); // TODO
+
+      this._mineForOre();
+
+      // TODO
+      //checkForLeavingWorkers()
+      //checkForDeaths(healthRating, foodRating)
+    }
+  }
+
+  export module GameState {
+    export function newGameState(): GameState {
+      return new GameState(
+        1000,
+        0,
+        1,
+        10,
+        World.newWorld(5, 0.1, 0.1),
+        [
+          new Worker('Alice', Gender.FEMALE, 0.5, 0.2, 0.2, 0.2, 1),
+          new Worker('Bob', Gender.MALE, 0.2, 0.5, 0.2, 0.2, 1),
+          new Worker('Carol', Gender.FEMALE, 0.2, 0.2, 0.5, 0.2, 1),
+          new Worker('David', Gender.OTHER, 0.2, 0.2, 0.2, 0.5, 1)
+        ],
+        1
+      );
     }
   }
 }

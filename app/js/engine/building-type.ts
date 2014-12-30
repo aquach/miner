@@ -80,6 +80,19 @@ module Miner {
       opsCapacity: 5
     };
 
-    export var buildableBuildings = [ MINE, LAB, SICKBAY, OPS ];
+    export var TUBE: BuildingType = {
+      id: 5,
+      name: 'Tube',
+      cost: 50,
+      validTerrain: TerrainType.BARE,
+      constructionDays: 2,
+      oreProduction: 0,
+      miningCapacity: 0,
+      techCapacity: 0,
+      medicalCapacity: 0,
+      opsCapacity: 0
+    };
+
+    export var buildableBuildings = [ MINE, LAB, SICKBAY, OPS, TUBE ];
   }
 }

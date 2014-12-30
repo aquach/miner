@@ -17,13 +17,7 @@ module Miner {
     }
 
     distanceTo(x: number, y: number) {
-      var z = 0 - x - y;
-      var thisZ = 0 - x - y;
-      return _.min([
-        Math.abs(x - this.x),
-        Math.abs(y - this.y),
-        Math.abs(z - thisZ)
-      ]);
+      return Tile.distanceBetween(x, y, this.x, this.y);
     }
 
     isAdjacentTo(tile: Tile) {
@@ -37,10 +31,17 @@ module Miner {
     isUnderConstruction() {
       return this.buildingType !== null && this.remainingBuildingConstructionDays > 0;
     }
+  }
 
-    placeBuilding(buildingType: BuildingType) {
-      this.buildingType = buildingType;
-      this.remainingBuildingConstructionDays = buildingType.constructionDays;
+  export module Tile {
+    export function distanceBetween(x1: number, y1: number, x2: number, y2: number) {
+      var z1 = 0 - x1 - y1;
+      var z2 = 0 - x2 - y2;
+      return _.max([
+        Math.abs(x1 - x2),
+        Math.abs(y1 - y2),
+        Math.abs(z1 - z2)
+      ]);
     }
   }
 }

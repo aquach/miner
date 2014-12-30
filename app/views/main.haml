@@ -13,12 +13,30 @@
     %script(type="text/javascript" src="miner-generated.js")
 
   %body
-    #game(data-role="page")
-      %div(data-role="header")
-        %h1.money $240842
-        %a.ui-btn-right(href="#settings" data-icon="gear" data-transition="slidedown") Settings
-      %div(data-role="content")
-        .grid
+    #game
+      .left-pane.pane
+      .pane(style="width: 650px;")
+        .world
+      .right-pane.pane
+        .row
+          .label day 
+          .value.day
+        .row
+          .label money
+          .value.money
+        .row
+          .label morale
+          .value.morale
+        .row
+          .label wages
+          .value.wages
+        .row
+          .label ore
+          .value.ore
+        .row
+          .label ore price
+          .value.ore-price
+
         .build-panel
           %select
             %option(value="-1") Build some shit
@@ -26,7 +44,10 @@
             %option(value="1") Mine
             %option(value="7") Tube
 
-    #settings(data-role="page")
+        %button.advance-to-next-day See what tomorrow brings
+
+
+    -##settings(data-role="page")
       %div(data-role="header")
         %a(data-rel="back" data-role="button") Back
         %h1 Settings
