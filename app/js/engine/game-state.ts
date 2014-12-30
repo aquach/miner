@@ -2,6 +2,7 @@
 /// <reference path="result.ts" />
 /// <reference path="worker.ts" />
 /// <reference path="world.ts" />
+/// <reference path="../miner.ts" />
 
 module Miner {
   export interface CollectionGoal {
@@ -47,15 +48,16 @@ module Miner {
       return Math.floor(Math.sin(this.currentDay / 30) * 20 + 10);
     }
 
-    sellOre(amount: number): Result {
+    sellOre(amount: number): { result: Result; soldQuantity?: number; revenue?: number; } {
       if (this.ore < amount)
-        return Result.INSUFFICIENT_ORE;
+        return { result: Result.INSUFFICIENT_ORE };
 
       var revenue = amount * this.orePrice();
       this._gainMoney(revenue);
       this.ore -= amount;
+      dispatcher.trigger('update');
 
-      return Result.SUCCESS;
+      return { result: Result.SUCCESS, soldQuantity: amount, revenue: revenue };
     }
 
     _earnInterest() {
@@ -78,7 +80,7 @@ module Miner {
     }
 
     morale(): number {
-      return Util.sum(_.map(this.workers, w => w.morale));
+      return Util.sum(_.map(this.workers, w => w.morale)) / this.workers.length;
     }
 
     _payWorkers() {
@@ -99,6 +101,7 @@ module Miner {
         return Result.INSUFFICIENT_FUNDS;
 
       this.world.placeBuilding(x, y, b);
+      dispatcher.trigger('update');
 
       return Result.SUCCESS;
     }
@@ -108,7 +111,7 @@ module Miner {
       this.ore += 10;
     }
 
-    advanceToNextDay() {
+    advanceToNextDay(): Result {
       this.currentDay++;
       this.world.advanceConstruction();
       this._earnInterest();
@@ -122,9 +125,13 @@ module Miner {
 
       this._mineForOre();
 
+      dispatcher.trigger('update');
+
       // TODO
       //checkForLeavingWorkers()
       //checkForDeaths(healthRating, foodRating)
+
+      return Result.SUCCESS;
     }
   }
 

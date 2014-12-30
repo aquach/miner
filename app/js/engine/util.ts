@@ -33,6 +33,10 @@ module Miner {
     export function sum(list: number[]): number {
       return _.reduce(list, ((memo: number, num: number) => memo + num), 0);
     }
+    
+    export function numberWithCommas(x: number) {
+      return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
 
     var randomCache: number = null;
     export function sampleNormal(mean: number, sigma: number): number {

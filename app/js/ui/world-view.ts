@@ -22,6 +22,7 @@ module Miner {
         this.$el.append($cell);
       });
 
+      dispatcher.on('update', this.render, this);
       this.render();
     }
 

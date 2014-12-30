@@ -7,6 +7,17 @@
 
 declare module Backbone {
 
+    export function on(eventName: string, callback?: Function, context?: any): any;
+    export function off(eventName?: string, callback?: Function, context?: any): any;
+    export function trigger(eventName: string, ...args: any[]): any;
+    export function bind(eventName: string, callback: Function, context?: any): any;
+    export function unbind(eventName?: string, callback?: Function, context?: any): any;
+
+    export function once(events: string, callback: Function, context?: any): any;
+    export function listenTo(object: any, events: string, callback: Function): any;
+    export function listenToOnce(object: any, events: string, callback: Function): any;
+    export function stopListening(object?: any, events?: string, callback?: Function): any;
+
     interface AddOptions extends Silenceable {
         at?: number;
     }
