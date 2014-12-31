@@ -32,13 +32,13 @@ $(() => {
   $('.advance-to-next-day').click(() => {
     var result = Miner.game.advanceToNextDay();
     if (result !== Miner.Result.SUCCESS)
-      alert('Failed to go to next day. Why? ' + Miner.Result[result] + '.'); // TODO
+      alert('Failed to go to next day. Why? ' + Miner.Result[result] + '.');
   });
 
-  // Debug refreshing.
-  //$.event.special.swipe.horizontalDistanceThreshold = 300;
-  //$(document).swipe(() => {
-  //  $('body').remove();
-  //  window.location.reload();
-  //});
+  $('html').keydown(e => {
+    switch (e.which) {
+      case 78: $('.advance-to-next-day').click(); break;
+      case 83: $('.sell-ore').click(); break;
+    }
+  });
 })

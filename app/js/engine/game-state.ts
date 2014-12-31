@@ -33,7 +33,10 @@ module Miner {
       public currentWage: number,
       public world: World,
       public workers: Worker[],
-      public yesterdaysMorale: number
+      public yesterdaysMorale: number,
+      public interviewsConductedToday: number,
+      public lastInterviewedWorker: Worker,
+      public hiredToday: boolean
     ) { }
 
     _deductMoney(amount: number): Boolean {
@@ -143,6 +146,52 @@ module Miner {
       };
     }
 
+    rollWorker(): { result: Result; worker?: Worker; } {
+      if (this.interviewsConductedToday >= 3) {
+        return { result: Result.TOO_MANY_INTERVIEWS };
+      }
+
+      if (this.hiredToday) {
+        return { result: Result.ALREADY_HIRED_TODAY };
+      }
+
+      if (!this._deductMoney(100)) {
+        return { result: Result.INSUFFICIENT_FUNDS };
+      }
+
+      var namePool = [
+        'Alice',
+        'Bob',
+        'Carol',
+        'David'
+      ];
+      var genderPool = _.times(3, x => Gender.MALE)
+        .concat(_.times(3, x => Gender.FEMALE))
+        .concat([ Gender.OTHER ]);
+
+      var newWorker = new Worker(
+        _.sample(namePool), 
+        _.sample(genderPool),
+        Util.clamp(Util.sampleNormal(0.3, 0.3), 0, 1),
+        Util.clamp(Util.sampleNormal(0.3, 0.3), 0, 1),
+        Util.clamp(Util.sampleNormal(0.3, 0.3), 0, 1),
+        Util.clamp(Util.sampleNormal(0.3, 0.3), 0, 1),
+        1,
+        null
+      );
+
+      this.lastInterviewedWorker = newWorker;
+      this.interviewsConductedToday++;
+
+      return { result: Result.SUCCESS, worker: newWorker };
+    }
+
+    hireInterviewedWorker() {
+      this.workers.push(this.lastInterviewedWorker);
+      this.lastInterviewedWorker = null;
+      this.hiredToday = true;
+    }
+
     advanceToNextDay(): Result {
       this.currentDay++;
       this.world.advanceConstruction();
@@ -156,6 +205,10 @@ module Miner {
       _.each(this.workers, w => w.advanceMorale(this.opsPercent(), this.currentDay));
 
       this._mineForOre();
+
+      this.interviewsConductedToday = 0;
+      this.lastInterviewedWorker = null;
+      this.hiredToday = false;
 
       dispatcher.trigger('update');
 
@@ -181,7 +234,10 @@ module Miner {
           new Worker('Carol', Gender.FEMALE, 0.1, 0.1, 0.5, 0.1, 1, Team.MEDICAL),
           new Worker('David', Gender.OTHER, 0.1, 0.1, 0.1, 0.5, 1, Team.OPS)
         ],
-        1
+        1,
+        0,
+        null,
+        false
       );
     }
   }

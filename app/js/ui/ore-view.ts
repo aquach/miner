@@ -25,7 +25,7 @@ module Miner {
     _sellOre() {
       var result = game.sellOre(game.ore);
       if (result.result === Result.SUCCESS) {
-        alert('Sold ' + result.soldQuantity + ' ore for ' + result.revenue + ' zeny.');
+        console.log('Sold ' + result.soldQuantity + ' tons of ore for ' + result.revenue + ' zeny.');
       } else {
         alert('Failed to sell ore: ' + result + '.');
       }

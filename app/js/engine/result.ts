@@ -7,6 +7,8 @@ module Miner {
     TILE_FILLED,
     NOT_ADJACENT,
     INSUFFICIENT_ORE,
+    TOO_MANY_INTERVIEWS,
+    ALREADY_HIRED_TODAY,
     GAME_OVER
   }
 }
