@@ -10,7 +10,7 @@ module Miner {
     }
 
     render() {
-      this.$el.text(Math.floor(game.operationsPercent() * 100) + '%');
+      this.$el.text(Math.floor(game.opsPercent() * 100) + '%');
       return this;
     }
   }

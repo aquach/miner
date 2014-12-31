@@ -17,14 +17,12 @@ module Miner {
     amount: number;
   };
 
-  // TODO
   export var COLLECTION_DAYS: CollectionGoal[] = [
-    { currentDay: 30, amount: 250000 },
-    { currentDay: 60, amount: 500000 },
-    { currentDay: 90, amount: 500000 },
-    { currentDay: 120, amount: 2500000 },
-    { currentDay: 150, amount: 5000000 },
-    { currentDay: 180, amount: 50000000 }
+    { currentDay: 30, amount: 1000 },
+    { currentDay: 60, amount: 10000 },
+    { currentDay: 120, amount: 25000 },
+    { currentDay: 180, amount: 100000 },
+    { currentDay: 365, amount: 1000000 }
   ];
 
   export class GameState {
@@ -118,7 +116,7 @@ module Miner {
     }
 
     _mineForOre() {
-      this.ore += this.world.buildingStats().oreProduction * this.miningSaturation();
+      this.ore += Math.ceil(this.world.buildingStats().oreProduction * this.miningSaturation());
     }
 
     miningSaturation() {
@@ -127,7 +125,7 @@ module Miner {
       return numMines == 0 ? 1 : Util.clamp(totalSkill / numMines, 0, 1);
     }
 
-    operationsPercent() {
+    opsPercent() {
       var numBuildings = this.world.numConstructedBuildings();
       var numWorkers = this.workers.length;
       var opsBurden = numBuildings / 5 + numWorkers / 10;
@@ -136,6 +134,7 @@ module Miner {
     }
 
     workerStats(): WorkerStats {
+      // TODO: doesn't take teams into account
       return {
         miningSkill: Util.sum(_.map(this.workers, w => w.miningSkill)),
         techSkill: Util.sum(_.map(this.workers, w => w.techSkill)),
@@ -154,7 +153,7 @@ module Miner {
       this._payWorkers();
 
       this.yesterdaysMorale = this.morale();
-      _.each(this.workers, w => w.advanceMorale(1)); // TODO
+      _.each(this.workers, w => w.advanceMorale(this.opsPercent(), this.currentDay));
 
       this._mineForOre();
 
@@ -177,10 +176,10 @@ module Miner {
         10,
         World.newWorld(5, 0.1, 0.1),
         [
-          new Worker('Alice', Gender.FEMALE, 0.5, 0.2, 0.2, 0.2, 1),
-          new Worker('Bob', Gender.MALE, 0.2, 0.5, 0.2, 0.2, 1),
-          new Worker('Carol', Gender.FEMALE, 0.2, 0.2, 0.5, 0.2, 1),
-          new Worker('David', Gender.OTHER, 0.2, 0.2, 0.2, 0.5, 1)
+          new Worker('Alice', Gender.FEMALE, 0.5, 0.1, 0.1, 0.1, 1, Team.MINING),
+          new Worker('Bob', Gender.MALE, 0.1, 0.5, 0.1, 0.1, 1, Team.TECH),
+          new Worker('Carol', Gender.FEMALE, 0.1, 0.1, 0.5, 0.1, 1, Team.MEDICAL),
+          new Worker('David', Gender.OTHER, 0.1, 0.1, 0.1, 0.5, 1, Team.OPS)
         ],
         1
       );

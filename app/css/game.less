@@ -11,7 +11,7 @@ html {
 .world {
   position: relative;
   width: 600px;
-  height: 600px;
+  height: 620px;
   border: 1px solid;
 
   .cell {
@@ -34,31 +34,44 @@ html {
 }
 
 .right-pane {
-  width: 400px;
+  width: 500px;
   font-size: 24px;
 
   .row {
     vertical-align: middle;
 
     .label {
-      width: 100px;
+      width: 150px;
       display: inline-block;
       text-align: right;
     }
     .value {
-      width: 250px;
+      width: 300px;
       display: inline-block;
     }
   }
 
-  .build-panel select {
-    font-size: 24px;
+  hr {
+    text-align: center;
+    margin: 10px auto;
+  }
+
+  .build-panel {
+    margin: 10px;
+    text-align: center;
+    select {
+      font-size: 24px;
+    }
   }
 
   .advance-to-next-day {
     margin: 20px;
     padding: 10px;
     font-size: 36px;
+  }
+
+  .sell-ore {
+    padding: 5px;
   }
 }
 

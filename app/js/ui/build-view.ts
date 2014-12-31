@@ -37,7 +37,9 @@ module Miner {
         this._markEligibleBuildingSpots();
 
       _.each(BuildingType.buildableBuildings, b => {
-        this.$('select option[value=' + b.id + ']').text(b.name + ' (' + Util.numberWithCommas(b.cost) + ' zeny)');
+        var canBuy = b.cost <= game.money;
+        this.$('select option[value=' + b.id + ']').text(b.name + ' (' + Util.numberWithCommas(b.cost) + ' zeny)')
+          .css('color', canBuy ? 'black' : 'grey');
       });
       return this;
     }
@@ -58,14 +60,14 @@ module Miner {
 
     _finishBuilding() {
       this._isBuilding = false;
-      this.$('select').show();
+      this.$('select').val("-1").show();
       this.$('.done-building').hide();
       this._worldView.markTiles([]);
     }
 
     _onWorldViewCellClick(c: Coords) {
       if (this._isBuilding && game.world.canPlaceBuilding(c.x, c.y, this._selectedBuildingType()) === Result.SUCCESS) {
-        game.world.placeBuilding(c.x, c.y, this._selectedBuildingType());
+        game.buildBuilding(c.x, c.y, this._selectedBuildingType());
       }
     }
   }

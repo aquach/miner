@@ -10,7 +10,11 @@ module Miner {
     }
 
     render() {
-      this.$el.text(Util.numberWithCommas(game.currentDay));
+      var goal = game.nextCollectionGoal();
+      this.$el.text(
+        Util.numberWithCommas(game.currentDay) +
+        ' (' + Util.numberWithCommas(goal.currentDay - game.currentDay) + ' days to get ' + 
+        Util.numberWithCommas(goal.amount) + 'z)');
       return this;
     }
   }

@@ -10,6 +10,7 @@
 /// <reference path="ui/operations-view.ts" />
 /// <reference path="ui/mining-saturation-view.ts" />
 /// <reference path="ui/world-view.ts" />
+/// <reference path="ui/workers-view.ts" />
 /// <reference path="ui/wages-view.ts" />
 /// <reference path="miner.ts" />
 
@@ -26,6 +27,7 @@ $(() => {
   new Miner.WagesView({ el: $('.value.wages') });
   var worldView = new Miner.WorldView({ el: $('.world') });
   new Miner.BuildView({ el: $('.build-panel'), worldView: worldView });
+  new Miner.WorkersView({ el: $('.workers') });
 
   $('.advance-to-next-day').click(() => {
     var result = Miner.game.advanceToNextDay();

@@ -3,11 +3,11 @@
   %head
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="/themes/Miner.min.css" />
-    <link rel="stylesheet" href="/themes/jquery.mobile.structure-1.2.0.min.css" />
+    -#<link rel="stylesheet" href="/themes/Miner.min.css" />
+    -#<link rel="stylesheet" href="/themes/jquery.mobile.structure-1.2.0.min.css" />
     <link rel="stylesheet" href="css/game.less" />
     <script src="third-party-js/jquery-2.1.3.min.js"></script>
-    <script src="third-party-js/jquery.mobile-1.2.0.min.js"></script>
+    -#<script src="third-party-js/jquery.mobile-1.2.0.min.js"></script>
     %script(type="text/javascript" src="third-party-js/lodash.min.js")
     %script(type="text/javascript" src="third-party-js/backbone-min.js")
     %script(type="text/javascript" src="miner-generated.js")
@@ -22,7 +22,7 @@
           .label day 
           .value.day
         .row
-          .label money
+          .label zeny
           .value.money
         .row
           .label morale
@@ -42,29 +42,25 @@
           .label ops
           .value.operations
 
+        %hr
+
         .build-panel
           %select
             %option(value="-1") Build some shit
           %button.done-building Done Building
 
+        %hr
+
+        .workers
+          %table
+            %tr
+              %th name
+              %th mining
+              %th tech
+              %th medical
+              %th ops
+              %th morale
+
+        %hr
+
         %button.advance-to-next-day See what tomorrow brings
-
-
-    -##settings(data-role="page")
-      %div(data-role="header")
-        %a(data-rel="back" data-role="button") Back
-        %h1 Settings
-      %div(data-role="content")
-        %label{:for => "slider1"} Input slider:
-        %input#slider1{"data-theme" => "a", :max => "100", :min => "0", :name => "slider1", :type => "range", :value => "50"}/
-        %br/
-        %fieldset{"data-role" => "controlgroup", "data-type" => "horizontal"}
-          %legend Choose a pet:
-          %input#radio-choice-1{:checked => "checked", :name => "radio-choice", :type => "radio", :value => "choice-1"}/
-          %label{:for => "radio-choice-1"} Cat
-          %input#radio-choice-2{:name => "radio-choice", :type => "radio", :value => "choice-2"}/
-          %label{:for => "radio-choice-2"} Dog
-          %input#radio-choice-3{:name => "radio-choice", :type => "radio", :value => "choice-3"}/
-          %label{:for => "radio-choice-3"} Hamster
-          %input#radio-choice-4{:name => "radio-choice", :type => "radio", :value => "choice-4"}/
-          %label{:for => "radio-choice-4"} Lizard
