@@ -17,6 +17,7 @@ module Miner {
   export class Worker {
     // Numbers are all in the range [0, 1].
     constructor(
+      public id: number,
       public name: string,
       public gender: Gender,
       public miningSkill: number,
@@ -24,18 +25,18 @@ module Miner {
       public medicalSkill: number,
       public opsSkill: number,
       public morale: number,
+      public moraleInertia: number,
       public team: Team
-    ) { }
+      ) { }
 
     _desiredWage(currentDay: number): number {
       return currentDay / 7;
     }
 
-    static MORALE_INERTIA = 0.9;
-
-    advanceMorale(opsPercent: number, currentDay: number) {
+    advanceMorale(opsPercent: number, currentDay: number): boolean {
       var targetMorale = game.currentWage / this._desiredWage(currentDay) * opsPercent;
-      this.morale = Util.clamp(this.morale * Worker.MORALE_INERTIA + targetMorale * (1 - Worker.MORALE_INERTIA), 0, 1);
+      this.morale = Util.clamp(this.morale * this.moraleInertia + targetMorale * (1 - this.moraleInertia), 0, 1);
+      return !(this.morale < 0.05 && Math.random() < 0.25);
     }
   }
 }

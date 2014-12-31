@@ -25,6 +25,38 @@ module Miner {
     { currentDay: 365, amount: 1000000 }
   ];
 
+  var WORKER_NAME_POOL = [
+    'Alice',
+    'Bob',
+    'Brett',
+    'Carlos',
+    'Carol',
+    'Charlie',
+    'Chuck',
+    'Craig',
+    'Dan',
+    'David',
+    'Derek',
+    'Erin',
+    'Eve',
+    'Frank',
+    'JJ',
+    'Josh',
+    'Leo',
+    'Mallory',
+    'Mariel',
+    'Mitch',
+    'Oscar',
+    'Peggy',
+    'Sally',
+    'Sam',
+    'Sybil',
+    'Trent',
+    'Victor',
+    'Walter',
+    'Wendy'
+  ];
+
   export class GameState {
     constructor(
       public money: number,
@@ -52,7 +84,7 @@ module Miner {
     }
 
     orePrice(): number {
-      return Math.floor(Math.sin(this.currentDay / 30) * 20 + 10); // TODO
+      return Math.floor(Math.sin(this.currentDay / 30) * 10 + 20); // TODO
     }
 
     sellOre(amount: number): { result: Result; soldQuantity?: number; revenue?: number; } {
@@ -92,14 +124,14 @@ module Miner {
     }
 
     morale(): number {
-      return Util.sum(_.map(this.workers, w => w.morale)) / this.workers.length;
+      return this.workers.length > 0 ? (Util.sum(_.map(this.workers, w => w.morale)) / this.workers.length) : 1;
     }
 
     _payWorkers() {
       var amountToPay = this.workers.length * this.currentWage;
       if (!this._deductMoney(amountToPay)) {
         // Not enough to pay everyone; recompute wage using all money remaining.
-        this.currentWage = Math.floor(this.money / this.workers.length);
+        this.currentWage = Math.max(0, Math.floor(this.money / this.workers.length));
         this._deductMoney(this.workers.length * this.currentWage);
       }
     }
@@ -158,30 +190,27 @@ module Miner {
       if (!this._deductMoney(100)) {
         return { result: Result.INSUFFICIENT_FUNDS };
       }
-
-      var namePool = [
-        'Alice',
-        'Bob',
-        'Carol',
-        'David'
-      ];
       var genderPool = _.times(3, x => Gender.MALE)
         .concat(_.times(3, x => Gender.FEMALE))
         .concat([ Gender.OTHER ]);
 
       var newWorker = new Worker(
-        _.sample(namePool), 
+        _.random(1, 1 << 30),
+        _.sample(WORKER_NAME_POOL), 
         _.sample(genderPool),
         Util.clamp(Util.sampleNormal(0.3, 0.3), 0, 1),
         Util.clamp(Util.sampleNormal(0.3, 0.3), 0, 1),
         Util.clamp(Util.sampleNormal(0.3, 0.3), 0, 1),
         Util.clamp(Util.sampleNormal(0.3, 0.3), 0, 1),
         1,
+        Util.clamp(Util.sampleNormal(0.8, 0.1), 0, 0.9),
         null
       );
 
       this.lastInterviewedWorker = newWorker;
       this.interviewsConductedToday++;
+
+      dispatcher.trigger('update');
 
       return { result: Result.SUCCESS, worker: newWorker };
     }
@@ -190,6 +219,7 @@ module Miner {
       this.workers.push(this.lastInterviewedWorker);
       this.lastInterviewedWorker = null;
       this.hiredToday = true;
+      dispatcher.trigger('update');
     }
 
     advanceToNextDay(): Result {
@@ -202,7 +232,14 @@ module Miner {
       this._payWorkers();
 
       this.yesterdaysMorale = this.morale();
-      _.each(this.workers, w => w.advanceMorale(this.opsPercent(), this.currentDay));
+      var leavingWorkerIDs: number[] = [];
+      _.each(this.workers, w => {
+        var isStaying = w.advanceMorale(this.opsPercent(), this.currentDay);
+        if (!isStaying)
+          leavingWorkerIDs.push(w.id); 
+      });
+
+      this.workers = _.filter(this.workers, w => !_.contains(leavingWorkerIDs, w.id));
 
       this._mineForOre();
 
@@ -229,10 +266,10 @@ module Miner {
         10,
         World.newWorld(5, 0.1, 0.1),
         [
-          new Worker('Alice', Gender.FEMALE, 0.5, 0.1, 0.1, 0.1, 1, Team.MINING),
-          new Worker('Bob', Gender.MALE, 0.1, 0.5, 0.1, 0.1, 1, Team.TECH),
-          new Worker('Carol', Gender.FEMALE, 0.1, 0.1, 0.5, 0.1, 1, Team.MEDICAL),
-          new Worker('David', Gender.OTHER, 0.1, 0.1, 0.1, 0.5, 1, Team.OPS)
+          new Worker(1, 'Alice', Gender.FEMALE, 0.5, 0.1, 0.1, 0.1, 1, 0.9, Team.MINING),
+          new Worker(2, 'Bob', Gender.MALE, 0.1, 0.5, 0.1, 0.1, 1, 0.9, Team.TECH),
+          new Worker(3, 'Carol', Gender.FEMALE, 0.1, 0.1, 0.5, 0.1, 1, 0.9, Team.MEDICAL),
+          new Worker(4, 'David', Gender.OTHER, 0.1, 0.1, 0.1, 0.5, 1, 0.9, Team.OPS)
         ],
         1,
         0,

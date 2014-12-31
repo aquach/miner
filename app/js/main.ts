@@ -39,6 +39,7 @@ $(() => {
     switch (e.which) {
       case 78: $('.advance-to-next-day').click(); break;
       case 83: $('.sell-ore').click(); break;
+      case 66: $('.build-panel select').focus(); break;
     }
   });
 })
