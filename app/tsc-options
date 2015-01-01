@@ -1,1 +1,1 @@
--d --noImplicitAny --sourceMap -w --out public/miner-generated.js
+-d --noImplicitAny -w --out public/miner-generated.js

@@ -28,7 +28,7 @@ module Miner {
       ) { }
 
     _desiredWage(currentDay: number): number {
-      return currentDay / 7;
+      return 25 + currentDay / 5;
     }
 
     advanceMorale(opsPercent: number, currentDay: number): boolean {

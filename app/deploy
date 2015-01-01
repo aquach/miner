@@ -1,0 +1,11 @@
+ #!/bin/bash
+
+ set -x
+ set -e
+
+ rm -rf ~/Dropbox/Public/miner
+ mkdir ~/Dropbox/Public/miner
+ cd ~/Dropbox/Public/miner
+ ~/Dropbox/code/recursively-download.sh http://localhost:8000/
+ mv localhost\:8000/* .
+ rmdir localhost:8000/

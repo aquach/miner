@@ -21,7 +21,7 @@ module Miner {
     _setTile(tile: Tile) {
       this._tiles[this._index(tile.x, tile.y)] = tile;
     }
-      
+
     getTile(x: number, y: number): Tile {
       return this._tiles[this._index(x, y)];
     }
@@ -82,7 +82,7 @@ module Miner {
       else
         return Result.SUCCESS;
     }
-    
+
     allPotentialBuildingTiles(buildingType: BuildingType) {
       return _.filter(this.getAllTiles(), t => this.canPlaceBuilding(t.x, t.y, buildingType) === Result.SUCCESS);
     }

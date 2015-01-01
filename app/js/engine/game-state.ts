@@ -100,7 +100,7 @@ module Miner {
 
     interestRate() {
       var hasBank = this.world.countConstructedBuildings(BuildingType.SPACEBANK) > 0;
-      return hasBank ? 0.01 : 0;
+      return hasBank ? 0.005 : 0;
     }
 
     _earnInterest() {
@@ -182,10 +182,10 @@ module Miner {
     }
 
     rollWorker(): { result: Result; worker?: Worker; } {
-      if (this.interviewsConductedToday >= 3) 
+      if (this.interviewsConductedToday >= 3)
         return { result: Result.TOO_MANY_INTERVIEWS };
 
-      if (this.workers.length >= this.workerCapacity()) 
+      if (this.workers.length >= this.workerCapacity())
         return { result: Result.NO_SPACE_FOR_WORKER };
 
       if (this.hiredToday)
@@ -200,7 +200,7 @@ module Miner {
 
       var newWorker = new Worker(
         _.random(1, 1 << 30),
-        _.sample(WORKER_NAME_POOL), 
+        _.sample(WORKER_NAME_POOL),
         _.sample(genderPool),
         Util.clamp(Util.sampleNormal(0.3, 0.3), 0, 1),
         Util.clamp(Util.sampleNormal(0.3, 0.3), 0, 1),
@@ -241,7 +241,7 @@ module Miner {
       _.each(this.workers, w => {
         var isStaying = w.advanceMorale(this.opsPercent(), this.currentDay);
         if (!isStaying)
-          leavingWorkerIDs.push(w.id); 
+          leavingWorkerIDs.push(w.id);
       });
 
       this.workers = _.filter(this.workers, w => !_.contains(leavingWorkerIDs, w.id));
@@ -268,10 +268,10 @@ module Miner {
   export module GameState {
     export function newGameState(): GameState {
       return new GameState(
-        1000,
+        3000,
         0,
         1,
-        10,
+        25,
         World.newWorld(5, 0.2, 0.1),
         [
           new Worker(1, 'Alice', Gender.FEMALE, 0.5, 0.1, 0.1, 1, 0.9, Team.MINING),
