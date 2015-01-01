@@ -10,7 +10,6 @@ module Miner {
     oreProduction: number;
     miningCapacity: number;
     techCapacity: number;
-    medicalCapacity: number;
     opsCapacity: number;
   }
 
@@ -24,7 +23,6 @@ module Miner {
       oreProduction: 1,
       miningCapacity: 5,
       techCapacity: 5,
-      medicalCapacity: 5,
       opsCapacity: 5
     };
 
@@ -37,7 +35,6 @@ module Miner {
       oreProduction: 10,
       miningCapacity: 5,
       techCapacity: 0,
-      medicalCapacity: 0,
       opsCapacity: 0
     };
 
@@ -50,25 +47,11 @@ module Miner {
       oreProduction: 0,
       miningCapacity: 0,
       techCapacity: 5,
-      medicalCapacity: 0,
-      opsCapacity: 0
-    };
-
-    export var SICKBAY: BuildingType = {
-      id: 3,
-      name: 'Sickbay',
-      cost: 200,
-      validTerrain: TerrainType.BARE,
-      constructionDays: 5,
-      oreProduction: 0,
-      miningCapacity: 0,
-      techCapacity: 0,
-      medicalCapacity: 5,
       opsCapacity: 0
     };
 
     export var OPS: BuildingType = {
-      id: 4,
+      id: 3,
       name: 'Ops Center',
       cost: 200,
       validTerrain: TerrainType.BARE,
@@ -76,12 +59,11 @@ module Miner {
       oreProduction: 0,
       miningCapacity: 0,
       techCapacity: 0,
-      medicalCapacity: 0,
       opsCapacity: 5
     };
 
     export var TUBE: BuildingType = {
-      id: 5,
+      id: 4,
       name: 'Tube',
       cost: 50,
       validTerrain: TerrainType.BARE,
@@ -89,12 +71,11 @@ module Miner {
       oreProduction: 0,
       miningCapacity: 0,
       techCapacity: 0,
-      medicalCapacity: 0,
       opsCapacity: 0
     };
 
     export var SPACEBANK: BuildingType = {
-      id: 6,
+      id: 5,
       name: 'Spacebank',
       cost: 1000,
       validTerrain: TerrainType.BARE,
@@ -102,10 +83,9 @@ module Miner {
       oreProduction: 0,
       miningCapacity: 0,
       techCapacity: 0,
-      medicalCapacity: 0,
       opsCapacity: 0
     };
 
-    export var buildableBuildings = [ MINE, LAB, SICKBAY, OPS, TUBE, SPACEBANK ];
+    export var buildableBuildings = [ MINE, LAB, OPS, TUBE, SPACEBANK ];
   }
 }

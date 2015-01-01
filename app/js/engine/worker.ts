@@ -10,7 +10,6 @@ module Miner {
   export enum Team {
     MINING,
     TECH,
-    MEDICAL,
     OPS
   }
 
@@ -22,7 +21,6 @@ module Miner {
       public gender: Gender,
       public miningSkill: number,
       public techSkill: number,
-      public medicalSkill: number,
       public opsSkill: number,
       public morale: number,
       public moraleInertia: number,

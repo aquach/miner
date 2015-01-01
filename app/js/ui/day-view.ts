@@ -11,10 +11,7 @@ module Miner {
 
     render() {
       var goal = game.nextCollectionGoal();
-      this.$el.text(
-        Util.numberWithCommas(game.currentDay) +
-        ' (' + Util.numberWithCommas(goal.currentDay - game.currentDay) + ' days to get ' + 
-        Util.numberWithCommas(goal.amount) + 'z)');
+      this.$el.text(Util.numberWithCommas(game.currentDay) + '  / ' + goal.currentDay);
       return this;
     }
   }

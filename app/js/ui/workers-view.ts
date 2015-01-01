@@ -27,7 +27,6 @@ module Miner {
           w.name + ' (' + Gender[w.gender][0] + ')',
           grade(w.miningSkill),
           grade(w.techSkill),
-          grade(w.medicalSkill),
           grade(w.opsSkill),
           grade(w.morale)
         ];
@@ -50,7 +49,6 @@ module Miner {
       this.$('.value.gender').text(Gender[worker.gender]);
       this.$('.value.mining').text(grade(worker.miningSkill));
       this.$('.value.tech').text(grade(worker.techSkill));
-      this.$('.value.medical').text(grade(worker.medicalSkill));
       this.$('.value.ops').text(grade(worker.opsSkill));
     }
 

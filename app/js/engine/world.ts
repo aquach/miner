@@ -8,7 +8,6 @@ module Miner {
     oreProduction: number;
     miningCapacity: number;
     techCapacity: number;
-    medicalCapacity: number;
     opsCapacity: number;
   }
 
@@ -63,7 +62,6 @@ module Miner {
         oreProduction: Util.sum(_.map(tilesWithBuildings, t => t.buildingType.oreProduction)),
         miningCapacity: Util.sum(_.map(tilesWithBuildings, t => t.buildingType.miningCapacity)),
         techCapacity: Util.sum(_.map(tilesWithBuildings, t => t.buildingType.techCapacity)),
-        medicalCapacity: Util.sum(_.map(tilesWithBuildings, t => t.buildingType.medicalCapacity)),
         opsCapacity: Util.sum(_.map(tilesWithBuildings, t => t.buildingType.opsCapacity))
       };
     }

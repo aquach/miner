@@ -8,7 +8,6 @@ module Miner {
   export interface WorkerStats {
     miningSkill: number;
     techSkill: number;
-    medicalSkill: number;
     opsSkill: number;
   }
 
@@ -173,7 +172,6 @@ module Miner {
       return {
         miningSkill: Util.sum(_.map(this.workers, w => w.miningSkill)),
         techSkill: Util.sum(_.map(this.workers, w => w.techSkill)),
-        medicalSkill: Util.sum(_.map(this.workers, w => w.medicalSkill)),
         opsSkill: Util.sum(_.map(this.workers, w => w.opsSkill))
       };
     }
@@ -198,7 +196,6 @@ module Miner {
         _.random(1, 1 << 30),
         _.sample(WORKER_NAME_POOL), 
         _.sample(genderPool),
-        Util.clamp(Util.sampleNormal(0.3, 0.3), 0, 1),
         Util.clamp(Util.sampleNormal(0.3, 0.3), 0, 1),
         Util.clamp(Util.sampleNormal(0.3, 0.3), 0, 1),
         Util.clamp(Util.sampleNormal(0.3, 0.3), 0, 1),
@@ -266,10 +263,9 @@ module Miner {
         10,
         World.newWorld(5, 0.1, 0.1),
         [
-          new Worker(1, 'Alice', Gender.FEMALE, 0.5, 0.1, 0.1, 0.1, 1, 0.9, Team.MINING),
-          new Worker(2, 'Bob', Gender.MALE, 0.1, 0.5, 0.1, 0.1, 1, 0.9, Team.TECH),
-          new Worker(3, 'Carol', Gender.FEMALE, 0.1, 0.1, 0.5, 0.1, 1, 0.9, Team.MEDICAL),
-          new Worker(4, 'David', Gender.OTHER, 0.1, 0.1, 0.1, 0.5, 1, 0.9, Team.OPS)
+          new Worker(1, 'Alice', Gender.FEMALE, 0.5, 0.1, 0.1, 1, 0.9, Team.MINING),
+          new Worker(2, 'Bob', Gender.MALE, 0.1, 0.5, 0.1, 1, 0.9, Team.TECH),
+          new Worker(3, 'Carol', Gender.OTHER, 0.1, 0.1, 0.5, 1, 0.9, Team.OPS)
         ],
         1,
         0,

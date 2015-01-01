@@ -10,7 +10,9 @@ module Miner {
     }
 
     render() {
-      this.$el.text(Util.numberWithCommas(game.money) + 'z');
+      var goal = game.nextCollectionGoal();
+      this.$el.text(Util.numberWithCommas(game.money) + 'z  / ' +
+        Util.numberWithCommas(goal.amount) + 'z');
       return this;
     }
   }
