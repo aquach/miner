@@ -70,7 +70,6 @@ module Miner {
 
       var tooCloseToOtherBuilding = _.some(this.getAllTiles(),
         t => _.some(buildingType.antiProximity, (dist: number, buildingTypeID: string) => t.buildingType !== null && t.buildingType.id === _.parseInt(buildingTypeID) && t.distanceTo(x, y) <= dist));
-      console.log(x, y, buildingType.antiProximity, tooCloseToOtherBuilding);
 
       if (!isAdjacent)
         return Result.NOT_ADJACENT;
@@ -118,6 +117,12 @@ module Miner {
       tile.terrainType = TerrainType.BARE;
       tile.buildingType = BuildingType.MOTHERSHIP;
 
+      return world;
+    }
+
+    export function fromJSON(json: any) {
+      var world = new World(json.size);
+      world._tiles = _.map(json._tiles, t => Tile.fromJSON(t));
       return world;
     }
   }

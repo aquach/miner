@@ -109,7 +109,7 @@ module Miner {
     }
 
     nextCollectionGoal(): CollectionGoal {
-      return _.find(COLLECTION_DAYS, goal => this.currentDay < goal.currentDay);
+      return _.find(COLLECTION_DAYS, goal => this.currentDay <= goal.currentDay);
     }
 
     _checkCollection(): Result {
@@ -168,6 +168,10 @@ module Miner {
       return opsBurden == 0 ? 1 : opsSkill / opsBurden;
     }
 
+    workerCapacity(): number {
+      return (this.world.countConstructedBuildings(BuildingType.QUARTERS) + 1) * 5;
+    }
+
     workerStats(): WorkerStats {
       // TODO: doesn't take teams into account
       return {
@@ -178,17 +182,18 @@ module Miner {
     }
 
     rollWorker(): { result: Result; worker?: Worker; } {
-      if (this.interviewsConductedToday >= 3) {
+      if (this.interviewsConductedToday >= 3) 
         return { result: Result.TOO_MANY_INTERVIEWS };
-      }
 
-      if (this.hiredToday) {
+      if (this.workers.length >= this.workerCapacity()) 
+        return { result: Result.NO_SPACE_FOR_WORKER };
+
+      if (this.hiredToday)
         return { result: Result.ALREADY_HIRED_TODAY };
-      }
 
-      if (!this._deductMoney(100)) {
+      if (!this._deductMoney(100))
         return { result: Result.INSUFFICIENT_FUNDS };
-      }
+
       var genderPool = _.times(3, x => Gender.MALE)
         .concat(_.times(3, x => Gender.FEMALE))
         .concat([ Gender.OTHER ]);
@@ -221,11 +226,13 @@ module Miner {
     }
 
     advanceToNextDay(): Result {
-      this.currentDay++;
-      this.world.advanceConstruction();
-      this._earnInterest();
       var result = this._checkCollection();
       if (result !== Result.SUCCESS) return result;
+
+      this.currentDay++;
+
+      this.world.advanceConstruction();
+      this._earnInterest();
 
       this._payWorkers();
 
@@ -248,10 +255,13 @@ module Miner {
       dispatcher.trigger('update');
 
       // TODO
-      //checkForLeavingWorkers()
       //checkForDeaths(healthRating, foodRating)
 
       return Result.SUCCESS;
+    }
+
+    toJSON1(): string {
+      return JSON.stringify(this);
     }
   }
 
@@ -272,6 +282,27 @@ module Miner {
         0,
         null,
         false
+      );
+    }
+
+    export function fromJSON(str: string): GameState {
+      var json = JSON.parse(str);
+
+      var world = World.fromJSON(json.world);
+      var lastInterviewedWorker = json.lastInterviewedWorker !== null ? Worker.fromJSON(json.lastInterviewedWorker) : null;
+      var workers: Worker[] = _.map(json.workers, w => Worker.fromJSON(w));
+
+      return new GameState(
+        json.money,
+        json.ore,
+        json.currentDay,
+        json.currentWage,
+        world,
+        workers,
+        json.yesterdaysMorale,
+        json.interviewsConductedToday,
+        lastInterviewedWorker,
+        json.hiredToday
       );
     }
   }

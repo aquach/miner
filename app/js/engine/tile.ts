@@ -43,5 +43,11 @@ module Miner {
         Math.abs(z1 - z2)
       ]);
     }
+
+    export function fromJSON(t: {}) {
+      var tile = new Tile(null, null, null, null, null);
+      _.merge(tile, t);
+      return tile;
+    }
   }
 }

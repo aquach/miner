@@ -11,11 +11,17 @@
 /// <reference path="ui/mining-saturation-view.ts" />
 /// <reference path="ui/world-view.ts" />
 /// <reference path="ui/workers-view.ts" />
+/// <reference path="ui/worker-capacity-view.ts" />
 /// <reference path="ui/wages-view.ts" />
 /// <reference path="miner.ts" />
 
 $(() => {
-  Miner.game = Miner.GameState.newGameState();
+  var save = window.localStorage.getItem('save');
+  if (save !== null)
+    Miner.game = Miner.GameState.fromJSON(save);
+  else
+    Miner.game = Miner.GameState.newGameState();
+
   Miner.dispatcher = Backbone;
 
   new Miner.DayView({ el: $('.value.day') });
@@ -28,12 +34,25 @@ $(() => {
   var worldView = new Miner.WorldView({ el: $('.world') });
   new Miner.BuildView({ el: $('.build-panel'), worldView: worldView });
   new Miner.WorkersView({ el: $('.workers') });
+  new Miner.WorkerCapacityView({ el: $('.worker-capacity') });
 
   $('.advance-to-next-day').click(() => {
     var result = Miner.game.advanceToNextDay();
     if (result !== Miner.Result.SUCCESS)
       alert('Failed to go to next day. Why? ' + Miner.Result[result] + '.');
   });
+
+  // Save / Load
+  Miner.dispatcher.on('update', () => {
+    window.localStorage.setItem('save', Miner.game.toJSON1());
+  });
+
+  $('.new-game').click(() => {
+    window.localStorage.removeItem('save');
+    window.location.reload();
+  });
+
+  // Keyboard shortcuts.
 
   $('html').keydown(e => {
     switch (e.which) {

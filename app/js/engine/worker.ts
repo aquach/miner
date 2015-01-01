@@ -37,4 +37,12 @@ module Miner {
       return !(this.morale < 0.05 && Math.random() < 0.25);
     }
   }
+
+  export module Worker {
+    export function fromJSON(json: {}) {
+      var worker = new Worker(null, null, null, null, null, null, null, null, null);
+      _.merge(worker, json);
+      return worker;
+    }
+  }
 }

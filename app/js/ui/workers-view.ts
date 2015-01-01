@@ -20,7 +20,7 @@ module Miner {
 
     render() {
       this.$('table .worker').remove();
-      this.$('.interview').toggle(!game.hiredToday);
+      this.$('.interview').toggle(!game.hiredToday && game.workers.length < game.workerCapacity());
       this.$('.interview-stats').toggle(game.lastInterviewedWorker !== null);
       _.each(game.workers, w => {
         var cells = [
