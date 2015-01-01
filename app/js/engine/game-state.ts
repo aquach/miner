@@ -150,7 +150,8 @@ module Miner {
     }
 
     _mineForOre() {
-      this.ore += Math.ceil(this.world.buildingStats().oreProduction * this.miningSaturation());
+      var oreProduction = 1 + this.world.countConstructedBuildings(BuildingType.MINE) * 10;
+      this.ore += Math.ceil(oreProduction * this.miningSaturation());
     }
 
     miningSaturation() {
@@ -261,7 +262,7 @@ module Miner {
         0,
         1,
         10,
-        World.newWorld(5, 0.1, 0.1),
+        World.newWorld(5, 0.2, 0.1),
         [
           new Worker(1, 'Alice', Gender.FEMALE, 0.5, 0.1, 0.1, 1, 0.9, Team.MINING),
           new Worker(2, 'Bob', Gender.MALE, 0.1, 0.5, 0.1, 1, 0.9, Team.TECH),

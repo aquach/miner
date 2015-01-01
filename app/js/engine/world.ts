@@ -4,13 +4,6 @@
 /// <reference path="util.ts" />
 
 module Miner {
-  export interface BuildingStats {
-    oreProduction: number;
-    miningCapacity: number;
-    techCapacity: number;
-    opsCapacity: number;
-  }
-
   export interface Coords {
     x: number;
     y: number;
@@ -56,16 +49,6 @@ module Miner {
 
     // Buildings
 
-    buildingStats(): BuildingStats {
-      var tilesWithBuildings = _.filter(this.getAllTiles(), t => t.buildingType !== null && t.isConstructedBuilding());
-      return {
-        oreProduction: Util.sum(_.map(tilesWithBuildings, t => t.buildingType.oreProduction)),
-        miningCapacity: Util.sum(_.map(tilesWithBuildings, t => t.buildingType.miningCapacity)),
-        techCapacity: Util.sum(_.map(tilesWithBuildings, t => t.buildingType.techCapacity)),
-        opsCapacity: Util.sum(_.map(tilesWithBuildings, t => t.buildingType.opsCapacity))
-      };
-    }
-
     numConstructedBuildings(): number {
       return _.filter(this.getAllTiles(), t => t.isConstructedBuilding()).length;
     }
@@ -84,8 +67,15 @@ module Miner {
     canPlaceBuilding(x: number, y: number, buildingType: BuildingType): Result {
       var tile = this.getTile(x, y);
       var isAdjacent = _.some(this.getAllTiles(), t => t.isConstructedBuilding() && tile.isAdjacentTo(t))
+
+      var tooCloseToOtherBuilding = _.some(this.getAllTiles(),
+        t => _.some(buildingType.antiProximity, (dist: number, buildingTypeID: string) => t.buildingType !== null && t.buildingType.id === _.parseInt(buildingTypeID) && t.distanceTo(x, y) <= dist));
+      console.log(x, y, buildingType.antiProximity, tooCloseToOtherBuilding);
+
       if (!isAdjacent)
         return Result.NOT_ADJACENT;
+      if (tooCloseToOtherBuilding)
+        return Result.TOO_CLOSE_TO_BAD_BUILDING;
       else if (tile.terrainType !== buildingType.validTerrain)
         return Result.INVALID_TERRAIN;
       else if (tile.buildingType !== null)

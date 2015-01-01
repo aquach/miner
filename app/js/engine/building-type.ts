@@ -7,10 +7,7 @@ module Miner {
     cost: number;
     validTerrain: TerrainType;
     constructionDays: number;
-    oreProduction: number;
-    miningCapacity: number;
-    techCapacity: number;
-    opsCapacity: number;
+    antiProximity: { [ id: string ]: number };
   }
 
   export module BuildingType {
@@ -20,72 +17,76 @@ module Miner {
       cost: 0,
       validTerrain: TerrainType.BARE,
       constructionDays: 0,
-      oreProduction: 1,
-      miningCapacity: 5,
-      techCapacity: 5,
-      opsCapacity: 5
+      antiProximity: {}
     };
 
     export var MINE: BuildingType = {
-      id: 1,
+      id: 2,
       name: 'Mine',
-      cost: 600,
+      cost: 1000,
       validTerrain: TerrainType.VEIN,
       constructionDays: 10,
-      oreProduction: 10,
-      miningCapacity: 5,
-      techCapacity: 0,
-      opsCapacity: 0
+      antiProximity: {
+        7: 1
+      }
     };
 
-     export var LAB: BuildingType = {
-      id: 2,
-      name: 'Lab',
-      cost: 200,
-      validTerrain: TerrainType.BARE,
-      constructionDays: 5,
-      oreProduction: 0,
-      miningCapacity: 0,
-      techCapacity: 5,
-      opsCapacity: 0
-    };
-
-    export var OPS: BuildingType = {
+     export var REACTOR: BuildingType = {
       id: 3,
-      name: 'Ops Center',
-      cost: 200,
+      name: 'Reactor',
+      cost: 1000,
       validTerrain: TerrainType.BARE,
       constructionDays: 5,
-      oreProduction: 0,
-      miningCapacity: 0,
-      techCapacity: 0,
-      opsCapacity: 5
+      antiProximity: {
+        4: 1,
+        7: 1
+      }
+    };
+
+    export var CANTEEN: BuildingType = {
+      id: 4,
+      name: 'Canteen',
+      cost: 500,
+      validTerrain: TerrainType.BARE,
+      constructionDays: 5,
+      antiProximity: {
+        3: 1,
+        4: 1
+      }
     };
 
     export var TUBE: BuildingType = {
-      id: 4,
+      id: 5,
       name: 'Tube',
-      cost: 50,
+      cost: 100,
       validTerrain: TerrainType.BARE,
       constructionDays: 1,
-      oreProduction: 0,
-      miningCapacity: 0,
-      techCapacity: 0,
-      opsCapacity: 0
+      antiProximity: {}
     };
 
     export var SPACEBANK: BuildingType = {
-      id: 5,
+      id: 6,
       name: 'Spacebank',
       cost: 1000,
       validTerrain: TerrainType.BARE,
       constructionDays: 5,
-      oreProduction: 0,
-      miningCapacity: 0,
-      techCapacity: 0,
-      opsCapacity: 0
+      antiProximity: {
+        6: 100
+      }
     };
 
-    export var buildableBuildings = [ MINE, LAB, OPS, TUBE, SPACEBANK ];
+    export var QUARTERS: BuildingType = {
+      id: 7,
+      name: 'Quarters',
+      cost: 500,
+      validTerrain: TerrainType.BARE,
+      constructionDays: 5,
+      antiProximity: {
+        2: 1,
+        3: 1
+      }
+    };
+
+    export var buildableBuildings = [ MINE, REACTOR, QUARTERS, CANTEEN, TUBE, SPACEBANK ];
   }
 }
