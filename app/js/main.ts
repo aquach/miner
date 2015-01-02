@@ -61,4 +61,21 @@ $(() => {
       case 66: $('.build-panel select').focus(); break;
     }
   });
+
+  var image = new Image();
+  image.src = 'images/hex.png';
+  _.times(30, t => {
+    _.delay(() => {
+      var canvas = (<any>$('#canvas')[0]);
+      var ctx = canvas.getContext('2d');
+      canvas.width = 17 * 30;
+      canvas.height = 15 * 30;
+      ctx.mozImageSmoothingEnabled = false;
+      ctx.webkitImageSmoothingEnabled = false;
+      ctx.msImageSmoothingEnabled = false;
+      ctx.imageSmoothingEnabled = false;
+      ctx.clearRect(0, 0, 1000, 1000);
+      ctx.drawImage(image, 0, 0, image.naturalWidth, image.naturalHeight, 0, 0, 17 * t, 15 * t);
+    }, 200 * t);
+  });
 })

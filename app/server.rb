@@ -6,6 +6,7 @@ require 'rubygems'
 require 'sinatra'
 
 set :port, 8000
+set :bind, '0.0.0.0'
 #set :views, :less => 'css', :default => 'views'
 
 get '/' do

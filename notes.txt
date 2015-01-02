@@ -1,28 +1,5 @@
-teams
-  waitingroom
-  mining
-  tech
-  medical
-  sickbay
-  operations
-
-collection days
-
-interview process: x people per day, can interview once per day, costs money
-  for each person, hire or ignore on the spot, can't go back
-
 people have stats in each of the teams, plus hidden social skill stat
   future: secret preference?
-
-people slowly want higher wages over the course of the game
-
-buildings, which merely add people capacity except for mine:
-  mothership
-  mine
-  lab
-  sickbay
-  ops center
-  ???
 
 people will ask for raises from time to time
   future: language of ask will depend on social skill
@@ -49,3 +26,7 @@ morale impacts work
 
 low morale will lead to quitting
 future: firing people also impacts morale
+
+workers unionize, and occasionally ask for minimum wages, days off, vacation days, etc
+
+each subsequent building of the same time after the first costs extra
