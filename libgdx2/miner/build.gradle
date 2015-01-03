@@ -87,9 +87,9 @@ project(":html") {
 project(":core") {
     apply plugin: "java"
 
-
     dependencies {
         compile "com.badlogicgames.gdx:gdx:$gdxVersion"
+        compile group: 'com.google.guava', name: 'guava', version: '12.0'
     }
 }
 
