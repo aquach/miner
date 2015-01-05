@@ -5,9 +5,16 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
-public class Tile extends Actor {
+public class TileView extends Actor {
+
+  public static int TILE_WIDTH = 20;
 
   private final ShapeRenderer shapeRenderer = new ShapeRenderer();
+
+  public TileView() {
+    setWidth(TILE_WIDTH);
+    setHeight(TILE_WIDTH * (float)Math.sqrt(3) / 2);
+  }
 
   @Override
   public void act(final float t) {
@@ -20,7 +27,7 @@ public class Tile extends Actor {
 
     shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
     shapeRenderer.setColor(Color.BLACK);
-    shapeRenderer.box(getX(), getWidth(), 0, getWidth(), getHeight(), 0);
+    shapeRenderer.box(getX(), getY(), 0, getWidth(), getHeight(), 0);
     shapeRenderer.end();
 
     b.begin();

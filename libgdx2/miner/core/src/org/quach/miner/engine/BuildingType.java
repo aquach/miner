@@ -71,23 +71,23 @@ public enum BuildingType {
   public final int id;
   public final String name;
   public final int cost;
-  public final TerrainType buildableType;
-  public final int constructionTime;
+  public final TerrainType validTerrain;
+  public final int constructionDays;
   public final Map<Integer, Integer> antiProximity;
 
   BuildingType(
     final int id,
     final String name,
     final int cost,
-    final TerrainType buildableType,
-    final int constructionTime,
+    final TerrainType validTerrain,
+    final int constructionDays,
     final Map<Integer, Integer> antiProximity
   ) {
     this.id = id;
     this.name = name;
     this.cost = cost;
-    this.buildableType = buildableType;
-    this.constructionTime = constructionTime;
+    this.validTerrain = validTerrain;
+    this.constructionDays = constructionDays;
     this.antiProximity = antiProximity;
   }
 

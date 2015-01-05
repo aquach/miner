@@ -3,10 +3,9 @@ package org.quach.miner.engine;
 public class Tile {
   public final int x;
   public final int y;
-  public final TerrainType terrainType;
-
-  private BuildingType buildingType;
-  private int remainingBuildingConstructionDays;
+  public TerrainType terrainType;
+  public BuildingType buildingType;
+  public int remainingBuildingConstructionDays;
 
   public Tile(
     final int x,
