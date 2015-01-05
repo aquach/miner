@@ -4,24 +4,26 @@ import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.VerticalGroup;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import org.quach.miner.actors.game.WorldView;
 
 public class MinerApplication implements ApplicationListener {
   private Stage gameStage;
 
-  public static int WORLD_WIDTH = 90;
-  public static int WORLD_HEIGHT = 160;
+  public static final int WORLD_WIDTH = 90;
+  public static final int WORLD_HEIGHT = 160;
 
   @Override
   public void create() {
     gameStage = new Stage(new FitViewport(WORLD_WIDTH, WORLD_HEIGHT));
     Gdx.input.setInputProcessor(gameStage);
 
-    final VerticalGroup vGroup = new VerticalGroup().fill();
-    vGroup.addActor(new WorldView());
+    final Table vGroup = new Table();
+    vGroup.setFillParent(true);
+    vGroup.add(new WorldView()).prefWidth(WORLD_WIDTH).prefHeight(WORLD_WIDTH).expand();
     gameStage.addActor(vGroup);
+    vGroup.debugAll();
   }
 
   @Override

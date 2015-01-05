@@ -1,3 +1,5 @@
+package org.quach.miner.engine;
+
 import com.badlogic.gdx.math.MathUtils;
 
 public class Worker {
@@ -10,19 +12,7 @@ public class Worker {
   public final float moraleInertia;
   public final Team team;
 
-  private float morale;
-
-  public enum Gender {
-    OTHER,
-    FEMALE,
-    MALE
-  }
-
-  public enum Team {
-    MINING,
-    TECH,
-    OPS
-  }
+  public float morale;
 
   // Numbers are all in the range [0, 1].
   public Worker(

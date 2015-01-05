@@ -3,6 +3,7 @@ package org.quach.miner.actors.game;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.google.common.base.Function;
 import com.google.common.collect.Iterators;
+import org.quach.miner.Log;
 import org.quach.miner.Miner;
 import org.quach.miner.engine.Tile;
 
@@ -19,7 +20,8 @@ public class WorldView extends Group {
         final TileView view = new TileView();
         final int xAmount = TileView.TILE_WIDTH * (t.x + Miner.world.size);
         view.setX(xAmount + 10);
-        view.setY(TileView.TILE_WIDTH * (t.y + Miner.world.size) + xAmount / 2 + 100);
+        view.setY(TileView.TILE_WIDTH * (t.y + Miner.world.size) + xAmount / 2);
+        Log.log("(%d, %d) => %f %f", t.x, t.y, view.getX(), view.getY());
         return view;
       }
     }), TileView.class);

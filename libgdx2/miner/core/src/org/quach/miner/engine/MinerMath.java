@@ -3,9 +3,9 @@ package org.quach.miner.engine;
 import com.badlogic.gdx.math.MathUtils;
 
 public class MinerMath {
-  private Double randomCache = null;
+  private static Double randomCache = null;
 
-  public double sampleNormal(final double mean, final double sigma) {
+  public static double sampleNormal(final double mean, final double sigma) {
     final double value;
     if (randomCache != null) {
       value = randomCache;

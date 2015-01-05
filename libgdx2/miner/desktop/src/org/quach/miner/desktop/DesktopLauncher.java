@@ -6,7 +6,9 @@ import org.quach.miner.MinerApplication;
 
 public class DesktopLauncher {
 	public static void main (String[] arg) {
-		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
+		final LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
+		config.width = MinerApplication.WORLD_WIDTH * 5;
+		config.height = MinerApplication.WORLD_HEIGHT * 5;
 		new LwjglApplication(new MinerApplication(), config);
 	}
 }

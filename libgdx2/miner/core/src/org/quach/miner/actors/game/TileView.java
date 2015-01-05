@@ -7,7 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 
 public class TileView extends Actor {
 
-  public static int TILE_WIDTH = 20;
+  public static final int TILE_WIDTH = 9;
 
   private final ShapeRenderer shapeRenderer = new ShapeRenderer();
 
@@ -25,9 +25,12 @@ public class TileView extends Actor {
   public void draw(final Batch b, final float parentAlpha) {
     b.end();
 
+    shapeRenderer.setProjectionMatrix(b.getProjectionMatrix());
+    shapeRenderer.setTransformMatrix(b.getTransformMatrix());
+
     shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
     shapeRenderer.setColor(Color.BLACK);
-    shapeRenderer.box(getX(), getY(), 0, getWidth(), getHeight(), 0);
+    shapeRenderer.rect(getX(), getY(), getWidth() - 1, getHeight() - 1);
     shapeRenderer.end();
 
     b.begin();
