@@ -5,6 +5,7 @@ import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
+import org.quach.miner.Dispatcher;
 import org.quach.miner.Miner;
 
 import javax.annotation.Nullable;
@@ -24,16 +25,16 @@ public class GameState {
   public boolean hiredToday;
 
   public GameState(
-    int money,
-    int ore,
-    int currentDay,
-    int currentWage,
-    World world,
-    List<Worker> workers,
-    float yesterdaysMorale,
+    final int money,
+    final int ore,
+    final int currentDay,
+    final int currentWage,
+    final World world,
+    final List<Worker> workers,
+    final float yesterdaysMorale,
     final int interviewsConductedToday,
-    Worker lastInterviewedWorker,
-    boolean hiredToday
+    final Worker lastInterviewedWorker,
+    final boolean hiredToday
   ) {
     this.money = money;
     this.ore = ore;
@@ -47,7 +48,7 @@ public class GameState {
     this.hiredToday = hiredToday;
   }
 
-  private boolean deductMoney(int amount) {
+  private boolean deductMoney(final int amount) {
     if (money - amount < 0)
       return false;
 
@@ -55,7 +56,7 @@ public class GameState {
     return true;
   }
 
-  private void gainMoney(int amount) {
+  private void gainMoney(final int amount) {
     money += amount;
   }
 
@@ -63,25 +64,25 @@ public class GameState {
     return (int)(Math.sin(currentDay / 30) * 10 + 20); // TODO
   }
 
-  public SellOreResult sellOre(int amount) {
+  public SellOreResult sellOre(final int amount) {
     if (ore < amount)
       return SellOreResult.create(Result.INSUFFICIENT_ORE, null, null);
 
-    int revenue = amount * orePrice();
+    final int revenue = amount * orePrice();
     gainMoney(revenue);
     ore -= amount;
-    //dispatcher.trigger('update');
+    Dispatcher.trigger("update");
 
     return SellOreResult.create(Result.SUCCESS, amount, revenue);
   }
 
   public float interestRate() {
-    boolean hasBank = world.countConstructedBuildings(BuildingType.SPACEBANK) > 0;
+    final boolean hasBank = world.countConstructedBuildings(BuildingType.SPACEBANK) > 0;
     return hasBank ? 0.005f : 0;
   }
 
   private void earnInterest() {
-    int revenue = (int)(money * interestRate());
+    final int revenue = (int)(money * interestRate());
     gainMoney(revenue);
   }
 
@@ -95,7 +96,7 @@ public class GameState {
   }
 
   private Result checkCollection() {
-    Optional<CollectionGoal> collectionDay = Iterators.tryFind(Iterators.forArray(Miner.COLLECTION_DAYS), new Predicate<CollectionGoal>() {
+    final Optional<CollectionGoal> collectionDay = Iterators.tryFind(Iterators.forArray(Miner.COLLECTION_DAYS), new Predicate<CollectionGoal>() {
       @Override
       public boolean apply(@Nullable final CollectionGoal c) {
         return c.day() == currentDay;
@@ -111,14 +112,14 @@ public class GameState {
 
   public float morale() {
     float totalMorale = 0;
-    for (Worker w: workers) {
+    for (final Worker w: workers) {
       totalMorale += w.morale;
     }
     return workers.size() > 0 ? totalMorale / workers.size() : 1;
   }
 
   private void payWorkers() {
-    int amountToPay = workers.size() * currentWage;
+    final int amountToPay = workers.size() * currentWage;
     if (!deductMoney(amountToPay)) {
       // Not enough to pay everyone; recompute wage using all money remaining.
       currentWage = Math.max(0, money / workers.size());
@@ -126,8 +127,8 @@ public class GameState {
     }
   }
 
-  public Result buildBuilding(int x, int y, BuildingType b) {
-    Result isPlaceable = world.canPlaceBuilding(x, y, b);
+  public Result buildBuilding(final int x, final int y, final BuildingType b) {
+    final Result isPlaceable = world.canPlaceBuilding(x, y, b);
     if (isPlaceable != Result.SUCCESS)
       return isPlaceable;
 
@@ -135,27 +136,27 @@ public class GameState {
       return Result.INSUFFICIENT_FUNDS;
 
     world.placeBuilding(x, y, b);
-    //dispatcher.trigger('update');
+    Dispatcher.trigger("update");
 
     return Result.SUCCESS;
   }
 
   private void mineForOre() {
-    int oreProduction = 1 + world.countConstructedBuildings(BuildingType.MINE) * 10;
+    final int oreProduction = 1 + world.countConstructedBuildings(BuildingType.MINE) * 10;
     ore += Math.ceil(oreProduction * miningSaturation());
   }
 
   public float miningSaturation() {
-    int numMines = world.countConstructedBuildings(BuildingType.MINE);
-    float totalSkill = workerStats().miningSkill();
+    final int numMines = world.countConstructedBuildings(BuildingType.MINE);
+    final float totalSkill = workerStats().miningSkill();
     return numMines == 0 ? 1 : MathUtils.clamp(totalSkill / numMines, 0, 1);
   }
 
   public float opsPercent() {
-    int numBuildings = world.numConstructedBuildings();
-    int numWorkers = workers.size();
-    float opsBurden = numBuildings / 5.0f + numWorkers / 10.0f;
-    float opsSkill = workerStats().opsSkill();
+    final int numBuildings = world.numConstructedBuildings();
+    final int numWorkers = workers.size();
+    final float opsBurden = numBuildings / 5.0f + numWorkers / 10.0f;
+    final float opsSkill = workerStats().opsSkill();
     return opsBurden == 0 ? 1 : opsSkill / opsBurden;
   }
 
@@ -169,7 +170,7 @@ public class GameState {
     float techSkill = 0;
     float opsSkill = 0;
 
-    for (Worker w: workers) {
+    for (final Worker w: workers) {
       miningSkill += w.miningSkill;
       techSkill += w.techSkill;
       opsSkill += w.opsSkill;
@@ -190,7 +191,7 @@ public class GameState {
     if (!deductMoney(100))
       return WorkerRollResult.create(Result.INSUFFICIENT_FUNDS, null);
 
-    Gender[] genderPool = {
+    final Gender[] genderPool = {
       Gender.MALE,
       Gender.MALE,
       Gender.MALE,
@@ -200,7 +201,7 @@ public class GameState {
       Gender.OTHER
     };
 
-    Worker newWorker = new Worker(
+    final Worker newWorker = new Worker(
       MathUtils.random(1 << 30),
       Miner.WORKER_NAME_POOL[MathUtils.random(Miner.WORKER_NAME_POOL.length)],
       genderPool[MathUtils.random(genderPool.length)],
@@ -215,7 +216,7 @@ public class GameState {
     lastInterviewedWorker = newWorker;
     interviewsConductedToday++;
 
-    //dispatcher.trigger('update');
+    Dispatcher.trigger("update");
 
     return WorkerRollResult.create(Result.SUCCESS, newWorker);
   }
@@ -224,11 +225,11 @@ public class GameState {
     workers.add(lastInterviewedWorker);
     lastInterviewedWorker = null;
     hiredToday = true;
-    //dispatcher.trigger('update');
+    Dispatcher.trigger("update");
   }
 
   public Result advanceToNextDay() {
-    Result result = checkCollection();
+    final Result result = checkCollection();
     if (result != Result.SUCCESS) return result;
 
     currentDay++;
@@ -239,10 +240,10 @@ public class GameState {
     payWorkers();
 
     yesterdaysMorale = morale();
-    Iterator<Worker> workerIter = workers.iterator();
+    final Iterator<Worker> workerIter = workers.iterator();
     while (workerIter.hasNext()) {
       final Worker w = workerIter.next();
-      boolean isStaying = w.advanceMorale(currentWage, opsPercent(), currentDay);
+      final boolean isStaying = w.advanceMorale(currentWage, opsPercent(), currentDay);
       if (!isStaying)
         workerIter.remove();
     }
@@ -253,7 +254,7 @@ public class GameState {
     lastInterviewedWorker = null;
     hiredToday = false;
 
-    //dispatcher.trigger('update');
+    Dispatcher.trigger("update");
 
     // TODO
     //checkForDeaths(healthRating, foodRating)

@@ -13,14 +13,14 @@ public class WorldView extends Group {
   private final TileView[] tiles;
 
   public WorldView() {
-    tiles = Iterators.toArray(Iterators.transform(Miner.world.getAllTiles(), new Function<Tile, TileView>() {
+    tiles = Iterators.toArray(Iterators.transform(Miner.game.world.getAllTiles(), new Function<Tile, TileView>() {
       @Nullable
       @Override
-      public TileView apply(@Nullable Tile t) {
+      public TileView apply(@Nullable final Tile t) {
         final TileView view = new TileView();
-        final int xAmount = TileView.TILE_WIDTH * (t.x + Miner.world.size);
+        final int xAmount = TileView.TILE_WIDTH * (t.x + Miner.game.world.size);
         view.setX(xAmount + 10);
-        view.setY(TileView.TILE_WIDTH * (t.y + Miner.world.size) + xAmount / 2);
+        view.setY(TileView.TILE_WIDTH * (t.y + Miner.game.world.size) + xAmount / 2);
         Log.log("(%d, %d) => %f %f", t.x, t.y, view.getX(), view.getY());
         return view;
       }

@@ -5,6 +5,7 @@ import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
+import org.quach.miner.Dispatcher;
 
 import javax.annotation.Nullable;
 import java.util.Iterator;
@@ -12,8 +13,8 @@ import java.util.List;
 import java.util.Map;
 
 public class World {
-  private Tile[] tiles;
-  private List<Coords> validCoordinates;
+  private final Tile[] tiles;
+  private final List<Coords> validCoordinates;
   public final int size;
 
   public World(final int size) {
@@ -47,9 +48,9 @@ public class World {
     });
   }
 
-  private int index(int x, int y) {
+  private int index(final int x, final int y) {
     // Sloppy indexing that wastes a little space.
-    int margin = size * 2 + 2;
+    final int margin = size * 2 + 2;
     return (x + size) * margin + (y + size);
   }
 
@@ -73,19 +74,19 @@ public class World {
     }));
   }
 
-  void placeBuilding(int x, int y, final BuildingType buildingType) {
+  void placeBuilding(final int x, final int y, final BuildingType buildingType) {
     final Tile tile = this.getTile(x, y);
     tile.buildingType = buildingType;
     tile.remainingBuildingConstructionDays = buildingType.constructionDays;
-    //dispatcher.trigger('update');
+    Dispatcher.trigger("update");
   }
 
   Result canPlaceBuilding(final int x, final int y, final BuildingType buildingType) {
     final Tile tile = this.getTile(x, y);
 
-    boolean isAdjacent = Iterators.any(this.getAllTiles(), new Predicate<Tile>() {
+    final boolean isAdjacent = Iterators.any(this.getAllTiles(), new Predicate<Tile>() {
       @Override
-      public boolean apply(@Nullable Tile t) {
+      public boolean apply(@Nullable final Tile t) {
         return t.isConstructedBuilding() && tile.isAdjacentTo(t);
       }
     });
@@ -93,12 +94,12 @@ public class World {
     if (!isAdjacent)
       return Result.NOT_ADJACENT;
 
-    boolean tooCloseToOtherBuilding = Iterators.any(this.getAllTiles(), new Predicate<Tile>() {
+    final boolean tooCloseToOtherBuilding = Iterators.any(this.getAllTiles(), new Predicate<Tile>() {
       @Override
       public boolean apply(@Nullable final Tile t) {
         return Iterators.any(buildingType.antiProximity.entrySet().iterator(), new Predicate<Map.Entry<Integer, Integer>>() {
           @Override
-          public boolean apply(@Nullable Map.Entry<Integer, Integer> input) {
+          public boolean apply(@Nullable final Map.Entry<Integer, Integer> input) {
             return t.buildingType != null && t.buildingType.id == input.getKey() && t.distanceTo(x, y) <= input.getValue();
           }
         });
@@ -119,7 +120,7 @@ public class World {
   Iterator<Tile> allPotentialBuildingTiles(final BuildingType buildingType) {
     return Iterators.filter(this.getAllTiles(), new Predicate<Tile>() {
       @Override
-      public boolean apply(@Nullable Tile t) {
+      public boolean apply(@Nullable final Tile t) {
         return canPlaceBuilding(t.x, t.y, buildingType) == Result.SUCCESS;
       }
     });
@@ -134,9 +135,9 @@ public class World {
     }
   }
 
-  public static World newWorld(int size, float mountainProbability, float veinProbability) {
+  public static World newWorld(final int size, final float mountainProbability, final float veinProbability) {
     final World world = new World(size);
-    for (Coords c: world.validCoordinates) {
+    for (final Coords c: world.validCoordinates) {
       final float rand = MathUtils.random();
 
       final TerrainType terrainType;

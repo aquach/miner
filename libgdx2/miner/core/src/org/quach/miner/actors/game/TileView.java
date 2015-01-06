@@ -7,7 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 
 public class TileView extends Actor {
 
-  public static final int TILE_WIDTH = 9;
+  public static final int TILE_WIDTH = 45;
 
   private final ShapeRenderer shapeRenderer = new ShapeRenderer();
 

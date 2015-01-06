@@ -1,10 +1,10 @@
 package org.quach.miner;
 
-import org.quach.miner.engine.World;
 import org.quach.miner.engine.CollectionGoal;
+import org.quach.miner.engine.GameState;
 
 public class Miner {
-  public static World world = World.newWorld(4, 0.2f, 0.2f);
+  public static GameState game = GameState.newGameState();
 
   public static final CollectionGoal[] COLLECTION_DAYS = {
     CollectionGoal.create(30, 1000),

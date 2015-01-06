@@ -9,12 +9,12 @@ import com.badlogic.gdx.backends.iosrobovm.IOSApplicationConfiguration;
 public class IOSLauncher extends IOSApplication.Delegate {
     @Override
     protected IOSApplication createApplication() {
-        IOSApplicationConfiguration config = new IOSApplicationConfiguration();
+        final IOSApplicationConfiguration config = new IOSApplicationConfiguration();
         return new IOSApplication(new Miner2(), config);
     }
 
-    public static void main(String[] argv) {
-        NSAutoreleasePool pool = new NSAutoreleasePool();
+    public static void main(final String[] argv) {
+        final NSAutoreleasePool pool = new NSAutoreleasePool();
         UIApplication.main(argv, null, IOSLauncher.class);
         pool.close();
     }

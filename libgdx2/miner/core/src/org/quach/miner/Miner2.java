@@ -23,24 +23,24 @@ public class Miner2 implements ApplicationListener {
         stage = new Stage();
         Gdx.input.setInputProcessor(stage);
 
-        Skin skin = new Skin(Gdx.files.internal("data/uiskin.json"));
+        final Skin skin = new Skin(Gdx.files.internal("data/uiskin.json"));
 
         // Generate a 1x1 white texture and store it in the skin named "white".
-        Pixmap pixmap = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
+        final Pixmap pixmap = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
         pixmap.setColor(Color.WHITE);
         pixmap.fill();
         skin.add("white", new Texture(pixmap));
 
 
         // Create a table that fills the screen. Everything else will go inside this table.
-        Table table = new Table();
+        final Table table = new Table();
         table.setFillParent(true);
         stage.addActor(table);
 
-        Label nameLabel = new Label("Name:", skin);
-        TextField nameText = new TextField("", skin);
-        Label addressLabel = new Label("Address:", skin);
-        TextField addressText = new TextField("", skin);
+        final Label nameLabel = new Label("Name:", skin);
+        final TextField nameText = new TextField("", skin);
+        final Label addressLabel = new Label("Address:", skin);
+        final TextField addressText = new TextField("", skin);
 
         table.add(nameLabel);
         table.add(nameText).width(100);
@@ -57,7 +57,7 @@ public class Miner2 implements ApplicationListener {
         // ClickListener could have been used, but would only fire when clicked. Also, canceling a ClickListener event won't
         // revert the checked state.
         button.addListener(new ChangeListener() {
-            public void changed (ChangeEvent event, Actor actor) {
+            public void changed (final ChangeEvent event, final Actor actor) {
                 System.out.println("Clicked! Is checked: " + button.isChecked());
                 button.setText("Good job!");
             }
@@ -76,7 +76,7 @@ public class Miner2 implements ApplicationListener {
     }
 
     @Override
-    public void resize (int width, int height) {
+    public void resize (final int width, final int height) {
         stage.getViewport().update(width, height, true);
     }
 

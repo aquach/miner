@@ -7,7 +7,7 @@ abstract public class WorkerRollResult {
   abstract Result result();
   abstract Worker worker();
 
-  public static WorkerRollResult create(Result result, Worker worker) {
+  public static WorkerRollResult create(final Result result, final Worker worker) {
     return new AutoValue_WorkerRollResult(result, worker);
   }
 }

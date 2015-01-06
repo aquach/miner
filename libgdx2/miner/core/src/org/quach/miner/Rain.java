@@ -60,7 +60,7 @@ public class Rain implements ApplicationListener {
     }
 
     private void spawnRaindrop() {
-        Rectangle raindrop = new Rectangle();
+        final Rectangle raindrop = new Rectangle();
         raindrop.x = MathUtils.random(0, 800 - 64);
         raindrop.y = 480;
         raindrop.width = 64;
@@ -89,7 +89,7 @@ public class Rain implements ApplicationListener {
         // all drops
         batch.begin();
         batch.draw(bucketImage, bucket.x, bucket.y);
-        for(Rectangle raindrop: raindrops) {
+        for(final Rectangle raindrop: raindrops) {
             batch.draw(dropImage, raindrop.x, raindrop.y);
         }
         batch.end();
@@ -98,7 +98,7 @@ public class Rain implements ApplicationListener {
 
         // process user input
         if(Gdx.input.isTouched()) {
-            Vector3 touchPos = new Vector3();
+            final Vector3 touchPos = new Vector3();
             touchPos.set(Gdx.input.getX(), Gdx.input.getY(), 0);
             camera.unproject(touchPos);
             bucket.x = touchPos.x - 64 / 2;
@@ -116,9 +116,9 @@ public class Rain implements ApplicationListener {
         // move the raindrops, remove any that are beneath the bottom edge of
         // the screen or that hit the bucket. In the later case we play back
         // a sound effect as well.
-        Iterator<Rectangle> iter = raindrops.iterator();
+        final Iterator<Rectangle> iter = raindrops.iterator();
         while(iter.hasNext()) {
-            Rectangle raindrop = iter.next();
+            final Rectangle raindrop = iter.next();
             raindrop.y -= 200 * Gdx.graphics.getDeltaTime();
             if(raindrop.y + 64 < 0) iter.remove();
             if(raindrop.overlaps(bucket)) {
@@ -139,7 +139,7 @@ public class Rain implements ApplicationListener {
     }
 
     @Override
-    public void resize(int width, int height) {
+    public void resize(final int width, final int height) {
     }
 
     @Override

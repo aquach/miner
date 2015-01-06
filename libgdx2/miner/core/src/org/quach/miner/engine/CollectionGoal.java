@@ -4,7 +4,7 @@ import com.google.auto.value.AutoValue;
 
 @AutoValue
 abstract public class CollectionGoal {
-  public static CollectionGoal create(int day, int amount) {
+  public static CollectionGoal create(final int day, final int amount) {
     return new AutoValue_CollectionGoal(day, amount);
   }
 

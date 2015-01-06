@@ -37,12 +37,12 @@ public class Worker {
     this.team = team;
   }
 
-  private float desiredWage(float currentDay) {
+  private float desiredWage(final float currentDay) {
     return 25 + currentDay / 5;
   }
 
-  public boolean advanceMorale(float currentWage, float opsPercent, float currentDay) {
-    float targetMorale = currentWage / desiredWage(currentDay) * opsPercent;
+  public boolean advanceMorale(final float currentWage, final float opsPercent, final float currentDay) {
+    final float targetMorale = currentWage / desiredWage(currentDay) * opsPercent;
     morale = MathUtils.clamp(morale * moraleInertia + targetMorale * (1 - moraleInertia), 0, 1);
     return !(morale < 0.05 && MathUtils.random() < 0.25);
   }

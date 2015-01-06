@@ -24,7 +24,7 @@ public class Tile {
     return distanceTo(tile.x, tile.y);
   }
 
-  public int distanceTo(int x, int y) {
+  public int distanceTo(final int x, final int y) {
     return distanceBetween(x, y, x, y);
   }
 

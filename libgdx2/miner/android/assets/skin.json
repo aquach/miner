@@ -1,0 +1,5 @@
+{
+  com.badlogic.gdx.graphics.Color: {
+    black32: { r: 0.125, g: 0.125, b: 0.125 }
+  }
+}

@@ -8,7 +8,7 @@ abstract public class SellOreResult {
   abstract Integer soldQuantity();
   abstract Integer revenue();
 
-  public static SellOreResult create(Result result, Integer soldQuality, Integer revenue) {
+  public static SellOreResult create(final Result result, final Integer soldQuality, final Integer revenue) {
     return new AutoValue_SellOreResult(result, soldQuality, revenue);
   }
 }
